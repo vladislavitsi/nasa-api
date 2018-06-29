@@ -88,6 +88,7 @@
                         <outlet property="dateView" destination="Vgz-fD-Pd8" id="D6u-OW-ZCd"/>
                         <outlet property="descriptionView" destination="d37-iy-qfq" id="8yd-yr-riB"/>
                         <outlet property="imageView" destination="0C6-Xw-j6v" id="HhZ-Dn-EEd"/>
+                        <outlet property="scrollView" destination="ZMg-4H-FrI" id="FEe-gu-G4g"/>
                         <outlet property="titleView" destination="exN-xT-NOI" id="3js-RW-pQg"/>
                     </connections>
                 </viewController>

@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {    
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var titleView: UILabel!
     @IBOutlet weak var dateView: UILabel!
     @IBOutlet weak var descriptionView: UILabel!
@@ -35,7 +36,7 @@ class ViewController: UIViewController {
     }
     
     @objc func openImage() {
-        let fullScreenImageViewController = FullScreenImageViewController.newViewController(for: imageView)
+        let fullScreenImageViewController = FullScreenImageViewController.newViewController(for: imageView, cutBy: scrollView)
         present(fullScreenImageViewController, animated: false)
     }
 }

@@ -9,41 +9,41 @@
 import UIKit
 
 extension FullScreenImageViewController {
-    static func newViewController(for imageView: UIImageView) -> UIViewController {
+    
+    static func newViewController(for imageView: UIImageView, cutBy overView: UIView) -> UIViewController {
         let viewController = FullScreenImageViewController()
         viewController.modalTransitionStyle = .crossDissolve
         viewController.modalPresentationStyle = .overFullScreen
         
-        var l = imageView.frame.intersection(imageView.superview!.superview!.frame)
-        
         viewController.initialFrame = imageView.convert(imageView.bounds, to: UIApplication.shared.keyWindow)
-        viewController.image = imageView.image
-        
-        viewController.imageViewToHide = imageView
+        viewController.initialFrame = imageView.frame.intersection(overView.bounds)
+        viewController.initialImage = imageView.snapshot(of: viewController.initialFrame)
+        viewController.originImageView = imageView
         return viewController
+    }
+    
+    static func imageWithView(_ view: UIView) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.isOpaque, 0.0)
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        view.layer.render(in: context)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return img
     }
 }
 
 
 class FullScreenImageViewController: UIViewController {
-    var imageView: UIImageView!
-    var scrollView: UIScrollView!
+    private var imageView: UIImageView!
+    private var scrollView: UIScrollView!
     
     fileprivate var imageBackgroundView: UIView!
     
     fileprivate var initialFrame: CGRect?
-    fileprivate var image: UIImage?
-    fileprivate var imageViewToHide: UIImageView!
-    
-    override var prefersStatusBarHidden: Bool {
-        return false
-        
-    }
+    fileprivate var initialImage: UIImage?
+    fileprivate var originImageView: UIImageView!
     
     override func loadView() {
-
-        
-//        Root View
         view = UIView()
         view.backgroundColor = UIColor.clear
         
@@ -56,9 +56,7 @@ class FullScreenImageViewController: UIViewController {
         scrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
 
         imageBackgroundView = UIView()
-        guard let imageBackgroundView = imageBackgroundView else {
-            return
-        }
+        guard let imageBackgroundView = imageBackgroundView else {return}
         imageBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(imageBackgroundView)
         imageBackgroundView.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
@@ -68,15 +66,19 @@ class FullScreenImageViewController: UIViewController {
         imageBackgroundView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         imageBackgroundView.heightAnchor.constraint(equalTo: scrollView.heightAnchor).isActive = true
 
+
         
         imageView = UIImageView(frame: (initialFrame)!)
         imageBackgroundView.addSubview(imageView)
-//        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.isUserInteractionEnabled = true
         imageView.contentMode = .scaleAspectFit
-        imageView.image = image
-//        imageView.isHidden = true
-        imageView = imageViewToHide
+        imageView.image = initialImage
+        
+//        let fadeAnim:CABasicAnimation = CABasicAnimation(keyPath: "contents")
+//        fadeAnim.fromValue = initialImage
+//        fadeAnim.toValue   = self.originImageView.image
+//        fadeAnim.duration  = 0.8         //smoothest value
+//        imageView.layer.add(fadeAnim, forKey: "contents");
     }
     
     var newFrame: CGRect?
@@ -85,45 +87,77 @@ class FullScreenImageViewController: UIViewController {
         let doubleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
         doubleTapGestureRecognizer.numberOfTapsRequired = 2
         imageView.addGestureRecognizer(doubleTapGestureRecognizer)
-        
-        let oldFrame = imageView.frame
+
         let viewFrame = UIApplication.shared.keyWindow!.frame
         let newWidth = viewFrame.size.width
-        let newHeight = oldFrame.height * newWidth / oldFrame.width
+        let newHeight = originImageView.frame.height * newWidth / originImageView.frame.width
         let originX = CGFloat(0.0)
         let originY = CGFloat(viewFrame.size.height / 2.0 - newHeight / 2.0)
         newFrame = CGRect(x: originX, y: originY, width: newWidth, height: newHeight)
     }
 
+    
+    
+    
     override func viewDidAppear(_ animated: Bool) {
-        self.imageViewToHide?.alpha = 0.01
-        imageView.isHidden = false
-        UIView.animate(withDuration: 0.2, animations: { [unowned self] in
-
-            //            NSLayoutConstraint.activate([
-            //                self.imageView.centerYAnchor.constraint(equalTo: (self.imageBackgroundView?.centerYAnchor)!),
-            //                self.imageView.widthAnchor.constraint(equalTo: (self.imageBackgroundView?.widthAnchor)!),
-            //                self.imageView.leadingAnchor.constraint(equalTo: (self.imageBackgroundView?.leadingAnchor)!),
-            //                self.imageView.trailingAnchor.constraint(equalTo: (self.imageBackgroundView?.trailingAnchor)!),
-            //                self.imageView.heightAnchor.constraint(equalToConstant: (self.imageView.image?.size.height)!)
-            //                ])
-            self.imageView.frame = self.newFrame!
-            self.view.backgroundColor = UIColor.black.withAlphaComponent(1.0)
-        }, completion: { [unowned self] _ in
+        self.originImageView.alpha = 0.01
+        UIView.transition(with: imageView,
+                          duration: 0.5,
+                          options: [.transitionFlipFromTop],
+                          animations: {
+                            self.imageView.image = self.originImageView.image
+                            self.imageView.frame = self.newFrame!
+                            self.view.backgroundColor = UIColor.black.withAlphaComponent(1.0)
+        }) { (_) in
             self.scrollView.delegate = self
-        })
+        }
+
     }
     
 
+    
+    
     @objc func tapped(_ recognizer: UITapGestureRecognizer) {
         scrollView.zoomWithAnimation()
     }
     
     func dissmiss() {
         presentingViewController?.dismiss(animated: true)
-        imageViewToHide?.alpha = 1.0
+        originImageView.alpha = 1.0
     }
 }
+
+extension UIView {
+    
+    /// Create snapshot
+    ///
+    /// - parameter rect: The `CGRect` of the portion of the view to return. If `nil` (or omitted),
+    ///                   return snapshot of the whole view.
+    ///
+    /// - returns: Returns `UIImage` of the specified portion of the view.
+    
+    func snapshot(of rect: CGRect? = nil) -> UIImage? {
+        // snapshot entire view
+        
+        UIGraphicsBeginImageContextWithOptions(bounds.size, isOpaque, 0)
+        drawHierarchy(in: bounds, afterScreenUpdates: true)
+        let wholeImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        // if no `rect` provided, return image of whole view
+        
+        guard let image = wholeImage, let rect = rect else { return wholeImage }
+        
+        // otherwise, grab specified `rect` of image
+        
+        let scale = image.scale
+        let scaledRect = CGRect(x: rect.origin.x * scale, y: rect.origin.y * scale, width: rect.size.width * scale, height: rect.size.height * scale)
+        guard let cgImage = image.cgImage?.cropping(to: scaledRect) else { return nil }
+        return UIImage(cgImage: cgImage, scale: scale, orientation: .up)
+    }
+    
+}
+
 
 class ScrollView: UIScrollView {
     override var adjustedContentInset: UIEdgeInsets {
