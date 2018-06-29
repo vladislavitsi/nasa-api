@@ -14,8 +14,6 @@ extension FullScreenImageViewController {
         viewController.modalTransitionStyle = .crossDissolve
         viewController.modalPresentationStyle = .overFullScreen
         
-        var l = imageView.frame.intersection(imageView.superview!.superview!.frame)
-        
         viewController.initialFrame = imageView.convert(imageView.bounds, to: UIApplication.shared.keyWindow)
         viewController.image = imageView.image
         
@@ -76,7 +74,6 @@ class FullScreenImageViewController: UIViewController {
         imageView.contentMode = .scaleAspectFit
         imageView.image = image
 //        imageView.isHidden = true
-        imageView = imageViewToHide
     }
     
     var newFrame: CGRect?
@@ -98,20 +95,13 @@ class FullScreenImageViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         self.imageViewToHide?.alpha = 0.01
         imageView.isHidden = false
-        UIView.animate(withDuration: 0.2, animations: { [unowned self] in
-
-            //            NSLayoutConstraint.activate([
-            //                self.imageView.centerYAnchor.constraint(equalTo: (self.imageBackgroundView?.centerYAnchor)!),
-            //                self.imageView.widthAnchor.constraint(equalTo: (self.imageBackgroundView?.widthAnchor)!),
-            //                self.imageView.leadingAnchor.constraint(equalTo: (self.imageBackgroundView?.leadingAnchor)!),
-            //                self.imageView.trailingAnchor.constraint(equalTo: (self.imageBackgroundView?.trailingAnchor)!),
-            //                self.imageView.heightAnchor.constraint(equalToConstant: (self.imageView.image?.size.height)!)
-            //                ])
+        UIView.transition(with: imageView, duration: 0.3, options: [.allowAnimatedContent], animations: {[unowned self] in
             self.imageView.frame = self.newFrame!
             self.view.backgroundColor = UIColor.black.withAlphaComponent(1.0)
         }, completion: { [unowned self] _ in
-            self.scrollView.delegate = self
+                self.scrollView.delegate = self
         })
+
     }
     
 
@@ -120,8 +110,16 @@ class FullScreenImageViewController: UIViewController {
     }
     
     func dissmiss() {
-        presentingViewController?.dismiss(animated: true)
-        imageViewToHide?.alpha = 1.0
+        scrollView.delegate = nil
+        UIView.transition(with: imageView, duration: 0.3, options: [.allowAnimatedContent], animations: {[unowned self] in
+            self.imageView.frame = self.initialFrame!
+            self.view.backgroundColor = UIColor.clear
+        }, completion: { [unowned self] _ in
+            self.presentingViewController?.dismiss(animated: false)
+            self.imageViewToHide?.alpha = 1.0
+        })
+        
+        
     }
 }
 
