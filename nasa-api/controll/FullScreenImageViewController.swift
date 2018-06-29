@@ -77,15 +77,6 @@ class FullScreenImageViewController: UIViewController {
         imageView.image = image
 //        imageView.isHidden = true
         imageView = imageViewToHide
-        
-        UIView *subView = self.viewWithManySubViews;
-        UIGraphicsBeginImageContextWithOptions(subView.bounds.size, YES, 0.0f);
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        [subView.layer renderInContext:context];
-        UIImage *snapshotImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        
-        UIImageView *snapshotImageView = [[UIImageView alloc] initWithImage:snapshotImage];
     }
     
     var newFrame: CGRect?
