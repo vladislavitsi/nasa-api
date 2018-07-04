@@ -30,7 +30,7 @@ class ViewController: UIViewController {
         apodDAO.getImage { [unowned self] image in
             self.imageView.image = image
         }
-
+        
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openImage)))
     }
     

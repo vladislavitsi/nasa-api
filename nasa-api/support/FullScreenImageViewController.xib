@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina4_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -14,28 +14,38 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" maximumZoomScale="2" translatesAutoresizingMaskIntoConstraints="NO" id="m2u-Kz-a1f">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9cS-r5-yGw">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                             <subviews>
-                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="FVu-iQ-Cpl">
-                                    <rect key="frame" x="0.0" y="193" width="375" height="281"/>
+                                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="FVu-iQ-Cpl">
+                                    <rect key="frame" x="83" y="0.0" width="500" height="375"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" secondItem="FVu-iQ-Cpl" secondAttribute="height" multiplier="4:3" id="mvS-jo-CQd"/>
+                                        <constraint firstAttribute="width" secondItem="FVu-iQ-Cpl" secondAttribute="height" multiplier="4:3" id="mvS-jo-CQd"/>
                                     </constraints>
                                 </imageView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstItem="FVu-iQ-Cpl" firstAttribute="top" secondItem="9cS-r5-yGw" secondAttribute="top" id="3qu-X6-I3r"/>
+                                <constraint firstItem="FVu-iQ-Cpl" firstAttribute="centerX" secondItem="9cS-r5-yGw" secondAttribute="centerX" id="AGh-nO-SB6"/>
+                                <constraint firstAttribute="bottom" secondItem="FVu-iQ-Cpl" secondAttribute="bottom" id="SRz-nb-A3J"/>
                                 <constraint firstItem="FVu-iQ-Cpl" firstAttribute="leading" secondItem="9cS-r5-yGw" secondAttribute="leading" id="XC6-Kb-Gev"/>
                                 <constraint firstItem="FVu-iQ-Cpl" firstAttribute="centerY" secondItem="9cS-r5-yGw" secondAttribute="centerY" id="ewk-Ez-vjA"/>
                                 <constraint firstAttribute="trailing" secondItem="FVu-iQ-Cpl" secondAttribute="trailing" id="nk1-Zb-PKx"/>
                             </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="XC6-Kb-Gev"/>
+                                    <exclude reference="ewk-Ez-vjA"/>
+                                    <exclude reference="nk1-Zb-PKx"/>
+                                </mask>
+                            </variation>
                         </view>
                     </subviews>
                     <constraints>
@@ -58,7 +68,7 @@
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3" propertyAccessControl="none"/>
-            <point key="canvasLocation" x="-670.5" y="-23.5"/>
+            <point key="canvasLocation" x="-818.5" y="-274.5"/>
         </view>
     </objects>
     <resources>

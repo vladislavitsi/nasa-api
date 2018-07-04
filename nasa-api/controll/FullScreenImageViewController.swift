@@ -10,12 +10,15 @@ import UIKit
 
 extension FullScreenImageViewController {
     static func newViewController(for imageView: UIImageView) -> UIViewController {
-        let viewController = FullScreenImageViewController()
+        guard let image = imageView.image else {
+            fatalError("image is not found")
+        }
+        let viewController = FullScreenImageViewController(with: image)
         viewController.modalTransitionStyle = .crossDissolve
         viewController.modalPresentationStyle = .overFullScreen
         
         viewController.initialFrame = imageView.convert(imageView.bounds, to: UIApplication.shared.keyWindow)
-        viewController.image = imageView.image
+        viewController.image = image
         
         viewController.imageViewToHide = imageView
         return viewController
@@ -24,117 +27,147 @@ extension FullScreenImageViewController {
 
 
 class FullScreenImageViewController: UIViewController {
+    //    MARK: View's outlets
     private var imageView: UIImageView!
     private var scrollView: UIScrollView!
     private var imageBackgroundView: UIView!
     
-    fileprivate var initialFrame: CGRect?
-    fileprivate var image: UIImage?
-    fileprivate var imageViewToHide: UIImageView!
+    //    MARK: Properties
+    fileprivate var initialFrame: CGRect = CGRect.zero
+    fileprivate var image: UIImage
+    fileprivate var imageViewToHide: UIImageView?
     
-    override var prefersStatusBarHidden: Bool {
-        return false
-        
+    private lazy var verticalConstraints: [NSLayoutConstraint] = []
+    private lazy var horizontalConstraints: [NSLayoutConstraint] = {
+        return [
+            
+        ]
+    }()
+    
+    //    MARK: Initializers
+    init(with image: UIImage) {
+        self.image = image
+        super.init(nibName: nil, bundle: nil)
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
-    private var newFrame: CGRect?
-    private var token: NSObjectProtocol?
-    
-    
+    //    MARK: UIViewController overriden methods
+//    Setting up View Controller
     override func loadView() {
         view = UIView()
         view.backgroundColor = UIColor.clear
         
         let scrollView = UIScrollView.getCustomScrollView()
-        view.addSubview(scrollView)
         self.scrollView = scrollView
-        scrollView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        scrollView.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            scrollView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            scrollView.widthAnchor.constraint(equalTo: view.widthAnchor)
+        ])
+
 
         imageBackgroundView = UIView()
         guard let imageBackgroundView = imageBackgroundView else {
             return
         }
         imageBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.addSubview(imageBackgroundView)
-        imageBackgroundView.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
-        imageBackgroundView.rightAnchor.constraint(equalTo: scrollView.rightAnchor).isActive = true
-        imageBackgroundView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        imageBackgroundView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
-        imageBackgroundView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        imageBackgroundView.heightAnchor.constraint(equalTo: scrollView.heightAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            imageBackgroundView.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
+            imageBackgroundView.rightAnchor.constraint(equalTo: scrollView.rightAnchor),
+            imageBackgroundView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            imageBackgroundView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            imageBackgroundView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            imageBackgroundView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
+        ])
 
+        imageView = UIImageView.getCustomImageView(for: image, initialFrame: initialFrame)
         
-        imageView = UIImageView(frame: (initialFrame)!)
+        view.addSubview(scrollView)
+        scrollView.addSubview(imageBackgroundView)
         imageBackgroundView.addSubview(imageView)
-        imageView.isUserInteractionEnabled = true
-        imageView.contentMode = .scaleToFill
-        imageView.image = image
     }
-
+    
     override func viewDidLoad() {
         let doubleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
         doubleTapGestureRecognizer.numberOfTapsRequired = 2
         imageView.addGestureRecognizer(doubleTapGestureRecognizer)
-        
-        let oldFrame = imageView.frame
-        let viewFrame = UIApplication.shared.keyWindow!.frame
-        let newWidth = viewFrame.size.width
-        let newHeight = oldFrame.height * newWidth / oldFrame.width
-        let originX = CGFloat(0.0)
-        let originY = CGFloat(viewFrame.size.height / 2.0 - newHeight / 2.0)
-        newFrame = CGRect(x: originX, y: originY, width: newWidth, height: newHeight)
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
+        verticalConstraints = [
+            self.imageView.leftAnchor.constraint(equalTo: self.imageBackgroundView.leftAnchor),
+            self.imageView.rightAnchor.constraint(equalTo: self.imageBackgroundView.rightAnchor),
+            self.imageView.centerYAnchor.constraint(equalTo: self.imageBackgroundView.centerYAnchor)
+        ]
+        
+        horizontalConstraints = [
+            self.imageView.centerXAnchor.constraint(equalTo: self.imageBackgroundView.centerXAnchor),
+            self.imageView.topAnchor.constraint(equalTo: self.imageBackgroundView.topAnchor),
+            self.imageView.bottomAnchor.constraint(equalTo: self.imageBackgroundView.bottomAnchor)
+        ]
+        
         self.imageViewToHide?.alpha = 0.01
-        imageView.isHidden = false
-        UIView.transition(with: imageView, duration: 0.3, options: [.allowAnimatedContent], animations: {[unowned self] in
-            self.imageView.frame = self.newFrame!
+
+        UIView.transition(with: imageView, duration: 0.3, options: [.allowAnimatedContent], animations: { [unowned self] in
+            self.imageView.frame = self.configureNewFrameForImage()
             self.view.backgroundColor = UIColor.black.withAlphaComponent(1.0)
         }, completion: { [unowned self] _ in
             self.imageView.translatesAutoresizingMaskIntoConstraints = false
-            self.imageView.leftAnchor.constraint(equalTo: self.imageBackgroundView.leftAnchor).isActive = true
-            self.imageView.rightAnchor.constraint(equalTo: self.imageBackgroundView.rightAnchor).isActive = true
-            self.imageView.centerYAnchor.constraint(equalTo: self.imageBackgroundView.centerYAnchor).isActive = true
-            self.imageView.widthAnchor.constraint(greaterThanOrEqualTo: self.imageView.heightAnchor, multiplier: 4.0/3.0).isActive = true
-            
-            self.token = NotificationCenter.default.addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { _ in
-                if UIDevice.current.orientation.isLandscape {
-                    self.imageView.leftAnchor.constraint(equalTo: self.imageBackgroundView.leftAnchor).isActive = false
-                    self.imageView.rightAnchor.constraint(equalTo: self.imageBackgroundView.rightAnchor).isActive = false
-                    self.imageView.topAnchor.constraint(equalTo: self.imageBackgroundView.topAnchor).isActive = true
-                    self.imageView.bottomAnchor.constraint(equalTo: self.imageBackgroundView.bottomAnchor).isActive = true
-                } else {
-                    self.imageView.leftAnchor.constraint(equalTo: self.imageBackgroundView.leftAnchor).isActive = true
-                    self.imageView.rightAnchor.constraint(equalTo: self.imageBackgroundView.rightAnchor).isActive = true
-                    self.imageView.topAnchor.constraint(equalTo: self.imageBackgroundView.topAnchor).isActive = false
-                    self.imageView.bottomAnchor.constraint(equalTo: self.imageBackgroundView.bottomAnchor).isActive = false
-                }
-            }
+            self.imageView.widthAnchor.constraint(equalTo: self.imageView.heightAnchor, multiplier: 4.0/3.0).isActive = true
+            NSLayoutConstraint.activate(UIDevice.current.orientation.isPortrait ? self.verticalConstraints : self.horizontalConstraints)
             self.scrollView.delegate = self
         })
-
     }
     
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        if UIDevice.current.orientation.isLandscape {
+            imageBackgroundView.removeConstraints(verticalConstraints)
+            NSLayoutConstraint.activate(horizontalConstraints)
+        } else {
+            imageBackgroundView.removeConstraints(horizontalConstraints)
+            NSLayoutConstraint.activate(verticalConstraints)
+        }
+        self.scrollView.zoomScale = 1.0
+    }
 
-    @objc func tapped(_ recognizer: UITapGestureRecognizer) {
+    //    MARK: Private methods
+    private func configureNewFrameForImage() -> CGRect {
+        let oldFrame = imageView.frame
+        let viewFrame = UIApplication.shared.keyWindow!.frame
+        var newHeight = CGFloat(0)
+        var newWidth = CGFloat(0)
+        var originX = CGFloat(0)
+        var originY = CGFloat(0)
+        if UIDevice.current.orientation.isLandscape {
+            newHeight = viewFrame.size.height
+            newWidth = oldFrame.width / oldFrame.height * newHeight
+            originX = CGFloat(viewFrame.size.width / 2.0 - newWidth / 2.0)
+            originY = CGFloat(0)
+        } else {
+            newWidth = viewFrame.size.width
+            newHeight = oldFrame.height * newWidth / oldFrame.width
+            originX = CGFloat(0)
+            originY = CGFloat(viewFrame.size.height / 2.0 - newHeight / 2.0)
+        }
+        return CGRect(x: originX, y: originY, width: newWidth, height: newHeight)
+    }
+
+    @objc private func tapped(_ recognizer: UITapGestureRecognizer) {
         scrollView.zoomWithAnimation()
     }
     
-    func dissmiss() {
+    private func dissmiss() {
         scrollView.delegate = nil
         UIView.transition(with: imageView, duration: 0.3, options: [.allowAnimatedContent], animations: {[unowned self] in
-            self.imageView.alpha = 0.0
             self.imageViewToHide?.alpha = 1.0
             self.view.alpha = 0.0
         }, completion: { [unowned self] _ in
             self.presentingViewController?.dismiss(animated: false)
-            NotificationCenter.default.removeObserver(self.token as Any)
-            self.imageViewToHide?.alpha = 1.0
         })
     }
 }
@@ -145,6 +178,16 @@ class ScrollView: UIScrollView {
     }
 }
 
+extension UIImageView {
+    fileprivate static func getCustomImageView(for image: UIImage, initialFrame: CGRect) -> UIImageView {
+        let imageView = UIImageView(frame: initialFrame)
+        imageView.isUserInteractionEnabled = true
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = image
+        return imageView
+    }
+}
+
 extension UIScrollView {
     fileprivate static func getCustomScrollView() -> UIScrollView {
         let scrollView = ScrollView()
@@ -152,12 +195,13 @@ extension UIScrollView {
         scrollView.alwaysBounceVertical = true
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
-        scrollView.maximumZoomScale = 5.0
+        scrollView.maximumZoomScale = 3.0
         scrollView.minimumZoomScale = 1.0
         return scrollView
     }
 }
 
+//  MARK: FullScreenImageViewController implementation of UIScrollViewDelegate
 extension FullScreenImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
