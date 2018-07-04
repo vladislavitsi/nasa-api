@@ -24,10 +24,9 @@ extension FullScreenImageViewController {
 
 
 class FullScreenImageViewController: UIViewController {
-    var imageView: UIImageView!
-    var scrollView: UIScrollView!
-    
-    fileprivate var imageBackgroundView: UIView!
+    private var imageView: UIImageView!
+    private var scrollView: UIScrollView!
+    private var imageBackgroundView: UIView!
     
     fileprivate var initialFrame: CGRect?
     fileprivate var image: UIImage?
@@ -38,10 +37,12 @@ class FullScreenImageViewController: UIViewController {
         
     }
     
+    
+    private var newFrame: CGRect?
+    private var token: NSObjectProtocol?
+    
+    
     override func loadView() {
-
-        
-//        Root View
         view = UIView()
         view.backgroundColor = UIColor.clear
         
@@ -69,15 +70,11 @@ class FullScreenImageViewController: UIViewController {
         
         imageView = UIImageView(frame: (initialFrame)!)
         imageBackgroundView.addSubview(imageView)
-//        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.isUserInteractionEnabled = true
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleToFill
         imageView.image = image
-//        imageView.isHidden = true
     }
-    
-    var newFrame: CGRect?
-    
+
     override func viewDidLoad() {
         let doubleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
         doubleTapGestureRecognizer.numberOfTapsRequired = 2
@@ -99,7 +96,26 @@ class FullScreenImageViewController: UIViewController {
             self.imageView.frame = self.newFrame!
             self.view.backgroundColor = UIColor.black.withAlphaComponent(1.0)
         }, completion: { [unowned self] _ in
-                self.scrollView.delegate = self
+            self.imageView.translatesAutoresizingMaskIntoConstraints = false
+            self.imageView.leftAnchor.constraint(equalTo: self.imageBackgroundView.leftAnchor).isActive = true
+            self.imageView.rightAnchor.constraint(equalTo: self.imageBackgroundView.rightAnchor).isActive = true
+            self.imageView.centerYAnchor.constraint(equalTo: self.imageBackgroundView.centerYAnchor).isActive = true
+            self.imageView.widthAnchor.constraint(greaterThanOrEqualTo: self.imageView.heightAnchor, multiplier: 4.0/3.0).isActive = true
+            
+            self.token = NotificationCenter.default.addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { _ in
+                if UIDevice.current.orientation.isLandscape {
+                    self.imageView.leftAnchor.constraint(equalTo: self.imageBackgroundView.leftAnchor).isActive = false
+                    self.imageView.rightAnchor.constraint(equalTo: self.imageBackgroundView.rightAnchor).isActive = false
+                    self.imageView.topAnchor.constraint(equalTo: self.imageBackgroundView.topAnchor).isActive = true
+                    self.imageView.bottomAnchor.constraint(equalTo: self.imageBackgroundView.bottomAnchor).isActive = true
+                } else {
+                    self.imageView.leftAnchor.constraint(equalTo: self.imageBackgroundView.leftAnchor).isActive = true
+                    self.imageView.rightAnchor.constraint(equalTo: self.imageBackgroundView.rightAnchor).isActive = true
+                    self.imageView.topAnchor.constraint(equalTo: self.imageBackgroundView.topAnchor).isActive = false
+                    self.imageView.bottomAnchor.constraint(equalTo: self.imageBackgroundView.bottomAnchor).isActive = false
+                }
+            }
+            self.scrollView.delegate = self
         })
 
     }
@@ -112,14 +128,14 @@ class FullScreenImageViewController: UIViewController {
     func dissmiss() {
         scrollView.delegate = nil
         UIView.transition(with: imageView, duration: 0.3, options: [.allowAnimatedContent], animations: {[unowned self] in
-            self.imageView.frame = self.initialFrame!
-            self.view.backgroundColor = UIColor.clear
+            self.imageView.alpha = 0.0
+            self.imageViewToHide?.alpha = 1.0
+            self.view.alpha = 0.0
         }, completion: { [unowned self] _ in
             self.presentingViewController?.dismiss(animated: false)
+            NotificationCenter.default.removeObserver(self.token as Any)
             self.imageViewToHide?.alpha = 1.0
         })
-        
-        
     }
 }
 
@@ -136,7 +152,7 @@ extension UIScrollView {
         scrollView.alwaysBounceVertical = true
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
-        scrollView.maximumZoomScale = 2.0
+        scrollView.maximumZoomScale = 5.0
         scrollView.minimumZoomScale = 1.0
         return scrollView
     }
@@ -154,7 +170,22 @@ extension FullScreenImageViewController: UIScrollViewDelegate {
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        print(scrollView.zoomScale)
+        centerZoomView()
+    }
+    
+    func centerZoomView() {
+        if imageView.frame.size.width < scrollView.bounds.size.width {
+            imageView.frame.origin.x = (scrollView.bounds.size.width - imageView.frame.size.width) / 2.0;
+            
+        } else {
+            imageView.frame.origin.x = 0.0;
+        }
+        
+        if imageView.frame.size.height < scrollView.bounds.size.height {
+            imageView.frame.origin.y = (scrollView.bounds.size.height - imageView.frame.size.height) / 2.0;
+        } else {
+            imageView.frame.origin.y = 0.0;
+        }
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
@@ -182,7 +213,7 @@ fileprivate extension UIScrollView {
         }
     }
     
-    func zoomWithAnimation(to scale: CGFloat) {
+    private func zoomWithAnimation(to scale: CGFloat) {
         UIView.animate(withDuration: 0.4) { [unowned self] in
             self.zoomScale = scale
         }

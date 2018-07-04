@@ -17,7 +17,6 @@
 		32F5DA0420E25E950029D8EF /* ApodDAOImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F5DA0320E25E950029D8EF /* ApodDAOImpl.swift */; };
 		32F5DA0820E27E6D0029D8EF /* FullScreenImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F5DA0620E27E6D0029D8EF /* FullScreenImageViewController.swift */; };
 		32F5DA0920E27E6D0029D8EF /* FullScreenImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32F5DA0720E27E6D0029D8EF /* FullScreenImageViewController.xib */; };
-		32F5DA0D20E3B6DF0029D8EF /* PresentTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F5DA0C20E3B6DF0029D8EF /* PresentTransitionAnimator.swift */; };
 		4453191368C9D3364A0BD5FD /* Pods_nasa_api.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C576D9E65153545657CF4F03 /* Pods_nasa_api.framework */; };
 /* End PBXBuildFile section */
 
@@ -34,7 +33,6 @@
 		32F5DA0320E25E950029D8EF /* ApodDAOImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApodDAOImpl.swift; sourceTree = "<group>"; };
 		32F5DA0620E27E6D0029D8EF /* FullScreenImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewController.swift; sourceTree = "<group>"; };
 		32F5DA0720E27E6D0029D8EF /* FullScreenImageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FullScreenImageViewController.xib; sourceTree = "<group>"; };
-		32F5DA0C20E3B6DF0029D8EF /* PresentTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTransitionAnimator.swift; sourceTree = "<group>"; };
 		99392B2E03D5FA013B2D9142 /* Pods-nasa-api.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nasa-api.release.xcconfig"; path = "Pods/Target Support Files/Pods-nasa-api/Pods-nasa-api.release.xcconfig"; sourceTree = "<group>"; };
 		C576D9E65153545657CF4F03 /* Pods_nasa_api.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nasa_api.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA796D1375F6CC282D828BCA /* Pods-nasa-api.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nasa-api.debug.xcconfig"; path = "Pods/Target Support Files/Pods-nasa-api/Pods-nasa-api.debug.xcconfig"; sourceTree = "<group>"; };
@@ -108,7 +106,6 @@
 			children = (
 				32F5D9EF20E240580029D8EF /* ViewController.swift */,
 				32F5DA0620E27E6D0029D8EF /* FullScreenImageViewController.swift */,
-				32F5DA0C20E3B6DF0029D8EF /* PresentTransitionAnimator.swift */,
 			);
 			path = controll;
 			sourceTree = "<group>";
@@ -256,7 +253,6 @@
 				32F5DA0020E257800029D8EF /* ApodDAO.swift in Sources */,
 				32F5DA0420E25E950029D8EF /* ApodDAOImpl.swift in Sources */,
 				32F5D9EE20E240580029D8EF /* AppDelegate.swift in Sources */,
-				32F5DA0D20E3B6DF0029D8EF /* PresentTransitionAnimator.swift in Sources */,
 				32F5DA0220E2584A0029D8EF /* ApodData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

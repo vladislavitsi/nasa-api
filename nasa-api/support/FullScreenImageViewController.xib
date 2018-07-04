@@ -23,10 +23,10 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9cS-r5-yGw">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             <subviews>
-                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FVu-iQ-Cpl">
+                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="FVu-iQ-Cpl">
                                     <rect key="frame" x="0.0" y="193" width="375" height="281"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" secondItem="FVu-iQ-Cpl" secondAttribute="height" multiplier="4:3" id="mvS-jo-CQd"/>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" secondItem="FVu-iQ-Cpl" secondAttribute="height" multiplier="4:3" id="mvS-jo-CQd"/>
                                     </constraints>
                                 </imageView>
                             </subviews>
@@ -35,7 +35,6 @@
                                 <constraint firstItem="FVu-iQ-Cpl" firstAttribute="leading" secondItem="9cS-r5-yGw" secondAttribute="leading" id="XC6-Kb-Gev"/>
                                 <constraint firstItem="FVu-iQ-Cpl" firstAttribute="centerY" secondItem="9cS-r5-yGw" secondAttribute="centerY" id="ewk-Ez-vjA"/>
                                 <constraint firstAttribute="trailing" secondItem="FVu-iQ-Cpl" secondAttribute="trailing" id="nk1-Zb-PKx"/>
-                                <constraint firstItem="FVu-iQ-Cpl" firstAttribute="width" secondItem="9cS-r5-yGw" secondAttribute="width" id="sr5-rz-JCM"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -62,4 +61,7 @@
             <point key="canvasLocation" x="-670.5" y="-23.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="Image" width="512" height="393"/>
+    </resources>
 </document>
