@@ -15,23 +15,53 @@ class ViewController: UIViewController {
     @IBOutlet weak var descriptionView: UILabel!
     @IBOutlet weak var copyrightView: UILabel!
     
-    private let apodDAO: ApodDAO = ApodDAOImpl()
+    @IBOutlet weak var scrollView: UIScrollView!
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: UIControlEvents.valueChanged)
+        return refreshControl
+    }()
 
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        refreshData()
+        refreshControl.endRefreshing()
+    }
+    
+    private let apodDAO: ApodDAO = ApodDAOImpl()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        scrollView.addSubview(refreshControl)
         
+        refreshData { [unowned self] in
+            self.imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.openImage)))
+        }
+        
+    }
+    
+    func refreshData(_ completion: (() -> Void)? = nil) {
+        let dispatchGroup = DispatchGroup()
+
+        dispatchGroup.enter()
         apodDAO.getData { [unowned self] apodData in
             self.titleView.text = apodData.title
             self.dateView.text = apodData.date
             self.descriptionView.text = apodData.description
-            self.copyrightView.text = "© " + (apodData.copyrightInfo ?? " ") 
+            self.copyrightView.text = "© " + (apodData.copyrightInfo ?? " ")
+            dispatchGroup.leave()
         }
         
+        dispatchGroup.enter()
         apodDAO.getImage { [unowned self] image in
             self.imageView.image = image
+            dispatchGroup.leave()
         }
         
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openImage)))
+        dispatchGroup.notify(queue: DispatchQueue.main) {
+            completion?()
+        }
     }
     
     @objc func openImage() {

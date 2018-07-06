@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		32D59FD320EF4614007EEB88 /* CGSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D59FD220EF4614007EEB88 /* CGSize.swift */; };
+		32E42CB120EE5E360078E3D7 /* ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E42CB020EE5E360078E3D7 /* ScrollView.swift */; };
+		32E42CB320EE5F220078E3D7 /* ImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E42CB220EE5F220078E3D7 /* ImageViewExtension.swift */; };
+		32E42CB720EE5FB60078E3D7 /* FullScreenViewControllerScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E42CB620EE5FB60078E3D7 /* FullScreenViewControllerScrollViewDelegate.swift */; };
 		32F5D9EE20E240580029D8EF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F5D9ED20E240580029D8EF /* AppDelegate.swift */; };
 		32F5D9F020E240580029D8EF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F5D9EF20E240580029D8EF /* ViewController.swift */; };
 		32F5D9F320E240580029D8EF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32F5D9F120E240580029D8EF /* Main.storyboard */; };
@@ -21,6 +25,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		32D59FD220EF4614007EEB88 /* CGSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSize.swift; sourceTree = "<group>"; };
+		32E42CB020EE5E360078E3D7 /* ScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollView.swift; sourceTree = "<group>"; };
+		32E42CB220EE5F220078E3D7 /* ImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewExtension.swift; sourceTree = "<group>"; };
+		32E42CB620EE5FB60078E3D7 /* FullScreenViewControllerScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewControllerScrollViewDelegate.swift; sourceTree = "<group>"; };
 		32F5D9EA20E240580029D8EF /* nasa-api.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "nasa-api.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		32F5D9ED20E240580029D8EF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		32F5D9EF20E240580029D8EF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -50,6 +58,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		32E42CAF20EE5E0C0078E3D7 /* FullScreenFramework */ = {
+			isa = PBXGroup;
+			children = (
+				32F5DA0620E27E6D0029D8EF /* FullScreenImageViewController.swift */,
+				32E42CB020EE5E360078E3D7 /* ScrollView.swift */,
+				32E42CB220EE5F220078E3D7 /* ImageViewExtension.swift */,
+				32E42CB620EE5FB60078E3D7 /* FullScreenViewControllerScrollViewDelegate.swift */,
+				32D59FD220EF4614007EEB88 /* CGSize.swift */,
+			);
+			path = FullScreenFramework;
+			sourceTree = "<group>";
+		};
 		32F5D9E120E240580029D8EF = {
 			isa = PBXGroup;
 			children = (
@@ -104,8 +124,8 @@
 		32F5DA0F20E3D8300029D8EF /* controll */ = {
 			isa = PBXGroup;
 			children = (
+				32E42CAF20EE5E0C0078E3D7 /* FullScreenFramework */,
 				32F5D9EF20E240580029D8EF /* ViewController.swift */,
-				32F5DA0620E27E6D0029D8EF /* FullScreenImageViewController.swift */,
 			);
 			path = controll;
 			sourceTree = "<group>";
@@ -249,10 +269,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				32F5D9F020E240580029D8EF /* ViewController.swift in Sources */,
+				32E42CB120EE5E360078E3D7 /* ScrollView.swift in Sources */,
+				32D59FD320EF4614007EEB88 /* CGSize.swift in Sources */,
 				32F5DA0820E27E6D0029D8EF /* FullScreenImageViewController.swift in Sources */,
 				32F5DA0020E257800029D8EF /* ApodDAO.swift in Sources */,
+				32E42CB720EE5FB60078E3D7 /* FullScreenViewControllerScrollViewDelegate.swift in Sources */,
 				32F5DA0420E25E950029D8EF /* ApodDAOImpl.swift in Sources */,
 				32F5D9EE20E240580029D8EF /* AppDelegate.swift in Sources */,
+				32E42CB320EE5F220078E3D7 /* ImageViewExtension.swift in Sources */,
 				32F5DA0220E2584A0029D8EF /* ApodData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
