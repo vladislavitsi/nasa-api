@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension FullScreenImageViewController {
+public extension FullScreenImageViewController {
     
     //    MARK: Factory method
     
@@ -28,14 +28,19 @@ extension FullScreenImageViewController {
     }
 }
 
-class FullScreenImageViewController: UIViewController {
+public class FullScreenImageViewController: UIViewController {
     
     //    MARK: View's outlets
     
     var imageView: UIImageView!
     var scrollView: ScrollView!
     var imageBackgroundView: UIView!
-
+    var previewBars = PreviewBar()
+    
+    override public var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return .slide
+    }
+    
     //    MARK: Properties
     
     fileprivate var initialFrame: CGRect = CGRect.zero
@@ -52,7 +57,7 @@ class FullScreenImageViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -61,7 +66,7 @@ class FullScreenImageViewController: UIViewController {
     //    MARK: UIViewController overriden methods
     
 //    Setting up View Controller
-    override func loadView() {
+    override public func loadView() {
         view = UIView()
         view.backgroundColor = UIColor.clear
         
@@ -90,17 +95,18 @@ class FullScreenImageViewController: UIViewController {
         imageBackgroundView.addSubview(imageView)
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
         let doubleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(doubleTapped(_:)))
         doubleTapGestureRecognizer.numberOfTapsRequired = 2
         tapGestureRecognizer.require(toFail: doubleTapGestureRecognizer)
         scrollView.addGestureRecognizer(doubleTapGestureRecognizer)
         scrollView.addGestureRecognizer(tapGestureRecognizer)
+        previewBars.applyToFullScreenView(view)
 }
 
     
-    override func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         verticalConstraints = [
             self.imageView.leftAnchor.constraint(equalTo: self.imageBackgroundView.leftAnchor),
             self.imageView.rightAnchor.constraint(equalTo: self.imageBackgroundView.rightAnchor),
@@ -121,16 +127,21 @@ class FullScreenImageViewController: UIViewController {
             self.locateImageConstraints(with: UIScreen.main.bounds.size)
             self.view.backgroundColor = UIColor.black.withAlphaComponent(1.0)
             self.view.layoutIfNeeded()
+            self.previewBars.showUpBars()
         }, completion: { [unowned self] _ in
             self.scrollView.delegate = self
         })
     }
     
+//    public override var preferredStatusBarStyle: UIStatusBarStyle {
+//        return
+//    }
     
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    
+    override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         locateImageConstraints(with: size)
     }
-
+    
     //    MARK: Private methods
     
     func locateImageConstraints(with size: CGSize) {
@@ -149,7 +160,8 @@ class FullScreenImageViewController: UIViewController {
     }
     
     @objc private func tapped(_ recognizer: UITapGestureRecognizer) {
-        print("hello")
+//      There gonna be a cool view with buttons and labels
+        previewBars.changeState()
     }
     
     func dissmiss() {
@@ -163,5 +175,54 @@ class FullScreenImageViewController: UIViewController {
     }
 }
 
+//  MARK: FullScreenImageViewController implementation of UIScrollViewDelegate
+extension FullScreenImageViewController: UIScrollViewDelegate {
+    
+    public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return imageView
+    }
+    
+    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if abs(scrollView.contentOffset.y) > 100 && scrollView.zoomScale == 1 {
+            dissmiss()
+        }
+    }
+    
+    public func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        centerZoomView()
+        view.bringSubview(toFront: imageView)
+    }
+    
+    private func centerZoomView() {
+        if imageView.frame.size.width < scrollView.bounds.size.width {
+            imageView.frame.origin.x = (scrollView.bounds.size.width - imageView.frame.size.width) / 2.0;
+            
+        } else {
+            imageView.frame.origin.x = 0.0;
+        }
+        
+        if imageView.frame.size.height < scrollView.bounds.size.height {
+            imageView.frame.origin.y = (scrollView.bounds.size.height - imageView.frame.size.height) / 2.0;
+        } else {
+            imageView.frame.origin.y = 0.0;
+        }
+    }
+    
+    public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        if abs(velocity.y) > 0.5 && scrollView.zoomScale == 1 {
+            dissmiss()
+        }
+    }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        var alpha = CGFloat(1.0)
+        if scrollView.zoomScale == scrollView.minimumZoomScale {
+            let yOffset = abs(scrollView.contentOffset.y)
+            alpha = 1 - 0.005 * (yOffset < 100 ? yOffset : 100)
+            previewBars.hideBars()
+        }
+        view.backgroundColor = view.backgroundColor?.withAlphaComponent(alpha)
+    }
+}
 
 
