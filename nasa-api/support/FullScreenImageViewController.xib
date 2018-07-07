@@ -20,86 +20,36 @@
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" maximumZoomScale="2" translatesAutoresizingMaskIntoConstraints="NO" id="m2u-Kz-a1f">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9cS-r5-yGw">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                            <subviews>
-                                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kot-QB-ZcV">
-                                    <rect key="frame" x="0.0" y="623" width="375" height="44"/>
-                                    <items>
-                                        <barButtonItem title="Item" id="2WZ-Yd-jXH"/>
-                                        <barButtonItem style="plain" systemItem="flexibleSpace" id="EKP-8x-4Gc"/>
-                                        <barButtonItem style="plain" systemItem="flexibleSpace" id="fqY-50-tpb"/>
-                                        <barButtonItem title="Item" id="FTm-ei-PD0"/>
-                                    </items>
-                                </toolbar>
-                                <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DvX-e7-sXr">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                    <items>
-                                        <navigationItem title="Title" id="Mhb-f6-0gX">
-                                            <barButtonItem key="leftBarButtonItem" systemItem="stop" id="OAH-93-row"/>
-                                            <barButtonItem key="rightBarButtonItem" title="Item" id="fFd-8b-xpK"/>
-                                        </navigationItem>
-                                    </items>
-                                </navigationBar>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M18-0F-4WG">
-                                    <rect key="frame" x="312" y="349" width="42" height="21"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="FVu-iQ-Cpl">
-                                    <rect key="frame" x="-257" y="0.0" width="889" height="667"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" secondItem="FVu-iQ-Cpl" secondAttribute="height" multiplier="4:3" id="mvS-jo-CQd"/>
-                                    </constraints>
-                                </imageView>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="FVu-iQ-Cpl">
+                            <rect key="frame" x="0.0" y="193" width="375" height="281"/>
                             <constraints>
-                                <constraint firstItem="FVu-iQ-Cpl" firstAttribute="top" secondItem="9cS-r5-yGw" secondAttribute="top" id="3qu-X6-I3r"/>
-                                <constraint firstItem="FVu-iQ-Cpl" firstAttribute="centerX" secondItem="9cS-r5-yGw" secondAttribute="centerX" id="AGh-nO-SB6"/>
-                                <constraint firstAttribute="trailing" secondItem="Kot-QB-ZcV" secondAttribute="trailing" id="Jtw-su-RiN"/>
-                                <constraint firstItem="Kot-QB-ZcV" firstAttribute="leading" secondItem="9cS-r5-yGw" secondAttribute="leading" id="MEb-Ln-vYf"/>
-                                <constraint firstAttribute="bottom" secondItem="FVu-iQ-Cpl" secondAttribute="bottom" id="SRz-nb-A3J"/>
-                                <constraint firstItem="FVu-iQ-Cpl" firstAttribute="leading" secondItem="9cS-r5-yGw" secondAttribute="leading" id="XC6-Kb-Gev"/>
-                                <constraint firstItem="DvX-e7-sXr" firstAttribute="top" secondItem="9cS-r5-yGw" secondAttribute="top" id="akp-Jb-wwe"/>
-                                <constraint firstItem="FVu-iQ-Cpl" firstAttribute="centerY" secondItem="9cS-r5-yGw" secondAttribute="centerY" id="ewk-Ez-vjA"/>
-                                <constraint firstItem="DvX-e7-sXr" firstAttribute="leading" secondItem="9cS-r5-yGw" secondAttribute="leading" id="fof-zs-Z7d"/>
-                                <constraint firstAttribute="bottom" secondItem="Kot-QB-ZcV" secondAttribute="bottom" id="hhW-1f-ITH"/>
-                                <constraint firstAttribute="trailing" secondItem="DvX-e7-sXr" secondAttribute="trailing" id="jrI-2I-Ipg"/>
-                                <constraint firstAttribute="trailing" secondItem="FVu-iQ-Cpl" secondAttribute="trailing" id="nk1-Zb-PKx"/>
+                                <constraint firstAttribute="width" secondItem="FVu-iQ-Cpl" secondAttribute="height" multiplier="4:3" id="4Tr-ch-kDu"/>
                             </constraints>
-                            <variation key="default">
-                                <mask key="constraints">
-                                    <exclude reference="XC6-Kb-Gev"/>
-                                    <exclude reference="ewk-Ez-vjA"/>
-                                    <exclude reference="nk1-Zb-PKx"/>
-                                </mask>
-                            </variation>
-                        </view>
+                        </imageView>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="9cS-r5-yGw" secondAttribute="trailing" id="9o6-IZ-I66"/>
-                        <constraint firstItem="9cS-r5-yGw" firstAttribute="height" secondItem="m2u-Kz-a1f" secondAttribute="height" id="Lyi-a7-2xk"/>
-                        <constraint firstItem="9cS-r5-yGw" firstAttribute="top" secondItem="m2u-Kz-a1f" secondAttribute="top" id="pe9-ls-XBR"/>
-                        <constraint firstItem="9cS-r5-yGw" firstAttribute="width" secondItem="m2u-Kz-a1f" secondAttribute="width" id="vUp-Hs-VU8"/>
-                        <constraint firstAttribute="bottom" secondItem="9cS-r5-yGw" secondAttribute="bottom" id="zJd-aW-Gnd"/>
-                        <constraint firstItem="9cS-r5-yGw" firstAttribute="leading" secondItem="m2u-Kz-a1f" secondAttribute="leading" id="zPZ-fN-JC9"/>
+                        <constraint firstAttribute="trailing" secondItem="FVu-iQ-Cpl" secondAttribute="trailing" id="4a3-XI-CES"/>
+                        <constraint firstItem="FVu-iQ-Cpl" firstAttribute="leading" secondItem="m2u-Kz-a1f" secondAttribute="leading" id="50x-FJ-Vhc"/>
+                        <constraint firstItem="FVu-iQ-Cpl" firstAttribute="leading" secondItem="m2u-Kz-a1f" secondAttribute="leading" priority="750" constant="1000" id="5IB-4d-Pnz"/>
+                        <constraint firstItem="FVu-iQ-Cpl" firstAttribute="centerX" secondItem="m2u-Kz-a1f" secondAttribute="centerX" id="G67-9E-GKB"/>
+                        <constraint firstItem="FVu-iQ-Cpl" firstAttribute="centerY" secondItem="m2u-Kz-a1f" secondAttribute="centerY" id="J38-Vu-aeR"/>
+                        <constraint firstAttribute="bottom" secondItem="FVu-iQ-Cpl" secondAttribute="bottom" priority="750" constant="110.5" id="Tph-2d-PB3"/>
+                        <constraint firstItem="FVu-iQ-Cpl" firstAttribute="top" relation="lessThanOrEqual" secondItem="m2u-Kz-a1f" secondAttribute="top" priority="750" constant="315.5" id="luj-lH-dQq"/>
+                        <constraint firstAttribute="trailing" secondItem="FVu-iQ-Cpl" secondAttribute="trailing" priority="750" constant="1000" id="orc-3p-FBz"/>
                     </constraints>
                 </scrollView>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <rect key="contentStretch" x="0.0" y="0.0" width="0.94999999999999996" height="1"/>
             <constraints>
-                <constraint firstItem="m2u-Kz-a1f" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="7tN-eL-mqP"/>
-                <constraint firstItem="m2u-Kz-a1f" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="SNI-Qx-lx8"/>
-                <constraint firstAttribute="bottom" secondItem="m2u-Kz-a1f" secondAttribute="bottom" id="pkE-Ao-CQu"/>
-                <constraint firstAttribute="trailing" secondItem="m2u-Kz-a1f" secondAttribute="trailing" id="x7M-Bn-nRb"/>
-                <constraint firstItem="m2u-Kz-a1f" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ziE-RX-zF9"/>
+                <constraint firstItem="m2u-Kz-a1f" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="1XE-2V-4h2"/>
+                <constraint firstItem="m2u-Kz-a1f" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="aSv-9o-Kar"/>
+                <constraint firstAttribute="bottom" secondItem="m2u-Kz-a1f" secondAttribute="bottom" id="bMp-69-zXJ"/>
+                <constraint firstItem="m2u-Kz-a1f" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="iCT-0o-PS5"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3" propertyAccessControl="none"/>
-            <point key="canvasLocation" x="-818.5" y="-274.5"/>
+            <point key="canvasLocation" x="-795" y="-278"/>
         </view>
     </objects>
     <resources>

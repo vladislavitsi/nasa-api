@@ -9,16 +9,10 @@
 import UIKit
 
 class ScrollView: UIScrollView {
-    override var adjustedContentInset: UIEdgeInsets {
-        return UIEdgeInsetsMake(0, 0, 0, 0)
-    }
-}
-
-
-extension ScrollView {
     static func getCustomScrollView() -> ScrollView {
         let scrollView = ScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.contentInsetAdjustmentBehavior = .never
         scrollView.alwaysBounceVertical = true
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
