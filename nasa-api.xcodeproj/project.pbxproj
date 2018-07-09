@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		32B3835D20F38D900047B658 /* topBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32B3835C20F38D900047B658 /* topBar.xib */; };
+		32B3835F20F392FD0047B658 /* TopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B3835E20F392FD0047B658 /* TopBar.swift */; };
 		32D59FD320EF4614007EEB88 /* CGSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D59FD220EF4614007EEB88 /* CGSize.swift */; };
 		32D59FDA20EF87BC007EEB88 /* PreviewBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D59FD920EF87BC007EEB88 /* PreviewBar.swift */; };
 		32E42CB120EE5E360078E3D7 /* ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E42CB020EE5E360078E3D7 /* ScrollView.swift */; };
@@ -25,6 +27,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		32B3835C20F38D900047B658 /* topBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = topBar.xib; sourceTree = "<group>"; };
+		32B3835E20F392FD0047B658 /* TopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBar.swift; sourceTree = "<group>"; };
 		32D59FD220EF4614007EEB88 /* CGSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSize.swift; sourceTree = "<group>"; };
 		32D59FD920EF87BC007EEB88 /* PreviewBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewBar.swift; sourceTree = "<group>"; };
 		32E42CB020EE5E360078E3D7 /* ScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollView.swift; sourceTree = "<group>"; };
@@ -66,6 +70,7 @@
 				32E42CB220EE5F220078E3D7 /* ImageViewExtension.swift */,
 				32D59FD220EF4614007EEB88 /* CGSize.swift */,
 				32D59FD920EF87BC007EEB88 /* PreviewBar.swift */,
+				32B3835E20F392FD0047B658 /* TopBar.swift */,
 			);
 			path = FullScreenFramework;
 			sourceTree = "<group>";
@@ -107,6 +112,7 @@
 				32F5D9F420E2405A0029D8EF /* Assets.xcassets */,
 				32F5D9F620E2405A0029D8EF /* LaunchScreen.storyboard */,
 				32F5D9F920E2405A0029D8EF /* Info.plist */,
+				32B3835C20F38D900047B658 /* topBar.xib */,
 			);
 			path = support;
 			sourceTree = "<group>";
@@ -215,6 +221,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32B3835D20F38D900047B658 /* topBar.xib in Resources */,
 				32F5D9F820E2405A0029D8EF /* LaunchScreen.storyboard in Resources */,
 				32F5D9F520E2405A0029D8EF /* Assets.xcassets in Resources */,
 				32F5DA0920E27E6D0029D8EF /* FullScreenImageViewController.xib in Resources */,
@@ -272,6 +279,7 @@
 				32E42CB120EE5E360078E3D7 /* ScrollView.swift in Sources */,
 				32D59FD320EF4614007EEB88 /* CGSize.swift in Sources */,
 				32F5DA0820E27E6D0029D8EF /* FullScreenImageViewController.swift in Sources */,
+				32B3835F20F392FD0047B658 /* TopBar.swift in Sources */,
 				32D59FDA20EF87BC007EEB88 /* PreviewBar.swift in Sources */,
 				32F5DA0020E257800029D8EF /* ApodDAO.swift in Sources */,
 				32F5DA0420E25E950029D8EF /* ApodDAOImpl.swift in Sources */,
@@ -425,6 +433,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = T7VR5AMBYN;
 				INFOPLIST_FILE = "$(SRCROOT)/nasa-api/support/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -444,6 +453,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = T7VR5AMBYN;
 				INFOPLIST_FILE = "$(SRCROOT)/nasa-api/support/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -34,11 +34,20 @@ public class FullScreenImageViewController: UIViewController {
     
     var imageView: UIImageView!
     var scrollView: ScrollView!
-//    var imageBackgroundView: UIView!
     var previewBars = PreviewBar()
     
+    
+    //    MARK: Status Bar settings
     override public var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return .slide
+    }
+    
+    public override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    public override var prefersStatusBarHidden: Bool {
+        return statusBarShouldBeHidden
     }
     
     //    MARK: Properties
@@ -49,6 +58,12 @@ public class FullScreenImageViewController: UIViewController {
     
     private lazy var portraitModeConstraints: [NSLayoutConstraint] = []
     private lazy var landscapeModeConstraints: [NSLayoutConstraint] = []
+    
+    var constraintX: NSLayoutConstraint!
+    var constraintY: NSLayoutConstraint!
+    
+    var verticalGap: CGFloat = 0.0
+    var horizontalGap: CGFloat = 0.0
     
     var statusBarShouldBeHidden = false
     
@@ -68,7 +83,6 @@ public class FullScreenImageViewController: UIViewController {
 //    Setting up View Controller
     override public func loadView() {
         view = UIView()
-        view.backgroundColor = UIColor.black
         
         scrollView = ScrollView.getCustomScrollView()
         view.addSubview(scrollView)
@@ -81,31 +95,31 @@ public class FullScreenImageViewController: UIViewController {
 
         imageView = UIImageView.getCustomImageView(for: image, initialFrame: initialFrame)
         scrollView.addSubview(imageView)
-
-        let imageViewToScrollViewTopSpaceConstraint = self.imageView.topAnchor.constraint(equalTo: self.scrollView.topAnchor)
-        let imageViewToScrollViewBottomSpaceConstraint = self.imageView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor)
-        imageViewToScrollViewTopSpaceConstraint.priority = UILayoutPriority(rawValue: 500)
-        imageViewToScrollViewBottomSpaceConstraint.priority = UILayoutPriority(rawValue: 500)
-
-        portraitModeConstraints = [
-            self.imageView.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor),
-            self.imageView.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor),
-            imageViewToScrollViewTopSpaceConstraint,
-            imageViewToScrollViewBottomSpaceConstraint
-        ]
         
-        let imageViewToScrollViewLeadingSpaceConstraint = self.imageView.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor)
-        let imageViewToScrollViewTrailingSpaceConstraint = self.imageView.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor)
-        imageViewToScrollViewLeadingSpaceConstraint.priority = UILayoutPriority(rawValue: 500)
-        imageViewToScrollViewTrailingSpaceConstraint.priority = UILayoutPriority(rawValue: 500)
+        portraitModeConstraints = [
+            imageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+        ]
         
         landscapeModeConstraints = [
-            self.imageView.topAnchor.constraint(equalTo: self.scrollView.topAnchor),
-            self.imageView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor),
-            imageViewToScrollViewLeadingSpaceConstraint,
-            imageViewToScrollViewTrailingSpaceConstraint
+            imageView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            imageView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
         ]
+        
+        let imageViewToScrollViewTopSpaceConstraint = self.imageView.topAnchor.constraint(equalTo: self.scrollView.topAnchor)
+        let imageViewToScrollViewBottomSpaceConstraint = self.imageView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor)
+        let imageViewToScrollViewLeadingSpaceConstraint = self.imageView.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor)
+        let imageViewToScrollViewTrailingSpaceConstraint = self.imageView.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor)
+        imageViewToScrollViewTopSpaceConstraint.priority = .defaultHigh
+        imageViewToScrollViewBottomSpaceConstraint.priority = .defaultHigh
+        imageViewToScrollViewLeadingSpaceConstraint.priority = .defaultHigh
+        imageViewToScrollViewTrailingSpaceConstraint.priority = .defaultHigh
+        imageViewToScrollViewLeadingSpaceConstraint.isActive = true
+        imageViewToScrollViewTrailingSpaceConstraint.isActive = true
+        imageViewToScrollViewTopSpaceConstraint.isActive = true
+        imageViewToScrollViewBottomSpaceConstraint.isActive = true
     }
+    
     
     override public func viewDidLoad() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
@@ -116,42 +130,37 @@ public class FullScreenImageViewController: UIViewController {
         scrollView.addGestureRecognizer(tapGestureRecognizer)
         previewBars.applyToFullScreenView(self)
 }
-
-    var constraintX: NSLayoutConstraint!
-    var constraintY: NSLayoutConstraint!
     
     override public func viewDidAppear(_ animated: Bool) {
-        self.imageViewToHide?.alpha = 0.01
+        imageViewToHide?.alpha = 0.01
 
-        self.imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.translatesAutoresizingMaskIntoConstraints = false
 
+        let screenSize = UIApplication.shared.keyWindow!.frame.size
+        let screenHeight = max(screenSize.height, screenSize.width)
+        let screenWidth = min(screenSize.height, screenSize.width)
+  
+        verticalGap = (screenHeight - ceil(screenWidth/image.size.ratio()))/2
+        horizontalGap = (screenHeight - ceil(screenWidth*image.size.ratio()))/2
+        
+        constraintY = imageView.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor)
+        constraintX = imageView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor)
+        
         UIView.transition(with: imageView, duration: 0.3, options: [.allowAnimatedContent], animations: { [unowned self] in
+            self.view.backgroundColor = UIColor.black
+
             self.imageView.widthAnchor.constraint(equalTo: self.imageView.heightAnchor, multiplier: self.image.size.ratio()).isActive = true
             
-            self.constraintY = self.imageView.centerYAnchor.constraint(equalTo: self.scrollView.centerYAnchor)
             self.constraintY.isActive = true
-            self.constraintX = self.imageView.centerXAnchor.constraint(equalTo: self.scrollView.centerXAnchor)
             self.constraintX.isActive = true
             
             self.locateImageConstraints(with: UIScreen.main.bounds.size)
             self.view.backgroundColor = UIColor.black.withAlphaComponent(1.0)
-            self.view.layoutIfNeeded()
-            self.previewBars.showUpBars()
+            
+            self.previewBars.showBars()
         }, completion: { [unowned self] _ in
             self.scrollView.delegate = self
         })
-    }
-    
-    public override func updateViewConstraints() {
-        super.updateViewConstraints()
-    }
-    
-    public override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
-    public override var prefersStatusBarHidden: Bool {
-        return statusBarShouldBeHidden
     }
     
     override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -169,6 +178,7 @@ public class FullScreenImageViewController: UIViewController {
             NSLayoutConstraint.activate(portraitModeConstraints)
         }
         self.scrollView.zoomScale = 1.0
+        self.view.layoutIfNeeded()
     }
 
     @objc private func doubleTapped(_ recognizer: UITapGestureRecognizer) {
@@ -176,7 +186,6 @@ public class FullScreenImageViewController: UIViewController {
     }
     
     @objc private func tapped(_ recognizer: UITapGestureRecognizer) {
-//      There gonna be a cool view with buttons and labels
         previewBars.changeState()
     }
     
@@ -208,23 +217,13 @@ extension FullScreenImageViewController: UIScrollViewDelegate {
     
     public func scrollViewDidZoom(_ scrollView: UIScrollView) {
         centerZoomView()
-
     }
     
     private func centerZoomView() {
-//        if imageView.frame.size.width > scrollView.bounds.size.width {
-//            // enable
-//            constraintX.isActive = true
-//        } else {
-//            // disable
-//            constraintX.isActive = false
-//        }
-        if imageView.frame.size.height < scrollView.bounds.size.height {
-            // enable
-            constraintY.isActive = true
+        if scrollView.frame.size.ratio() > image.size.ratio() {
+            constraintX.constant = max((scrollView.bounds.size.width - imageView.frame.size.width)/2 - horizontalGap, -horizontalGap)
         } else {
-            // disable
-            constraintY.isActive = false
+            constraintY.constant = max((scrollView.bounds.size.height - imageView.frame.size.height)/2 - verticalGap, -verticalGap)
         }
         view.layoutIfNeeded()
     }

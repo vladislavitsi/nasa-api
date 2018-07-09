@@ -11,30 +11,26 @@ import UIKit
 
 class PreviewBar {
     
-    private let topNavigationBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: 320, height: 44))
-    private let bottomNavigationBar = UIToolbar()
-    private var viewController: FullScreenImageViewController?
+    private let statusBarFillingView = UIView()
+    private let topBar = TopBar()
+    private let bottomBar = UIView()
+    private var viewController: FullScreenImageViewController? = nil
     private var isHidden = true
     
     init() {
-        viewController = nil
-        let navigationItem = UINavigationItem(title: "Well...")
-        let backButton = UIBarButtonItem(barButtonSystemItem: .stop, target: nil, action: nil)
-        navigationItem.leftBarButtonItem = backButton
-        topNavigationBar.translatesAutoresizingMaskIntoConstraints = false
-        topNavigationBar.setItems([navigationItem], animated: false)
-        UINavigationBar.appearance().barTintColor = UIColor.black.withAlphaComponent(0.5)
-        UINavigationBar.appearance().tintColor = .white
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white]
-        UIToolbar.appearance().barTintColor = .black
-        bottomNavigationBar.translatesAutoresizingMaskIntoConstraints = false
+        statusBarFillingView.translatesAutoresizingMaskIntoConstraints = false
+        statusBarFillingView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        
+        topBar.translatesAutoresizingMaskIntoConstraints = false
+        topBar.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        
+        bottomBar.translatesAutoresizingMaskIntoConstraints = false
+        bottomBar.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        
         hideBars()
     }
     
     func applyToFullScreenView(_ viewController: FullScreenImageViewController) {
-        let statusBarFillingView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 20))
-        statusBarFillingView.translatesAutoresizingMaskIntoConstraints = false
-        statusBarFillingView.backgroundColor = .black
         self.viewController = viewController
         guard let view = self.viewController?.view else {
             return
@@ -44,42 +40,54 @@ class PreviewBar {
             statusBarFillingView.topAnchor.constraint(equalTo: view.topAnchor),
             statusBarFillingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             statusBarFillingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            statusBarFillingView.heightAnchor.constraint(equalToConstant: 0)
-            ])
-        statusBarFillingView.alpha = 0
+            statusBarFillingView.heightAnchor.constraint(equalToConstant: 20)
+        ])
+        statusBarFillingView.alpha = 1
         
-        view.addSubview(topNavigationBar)
+        view.addSubview(topBar)
         NSLayoutConstraint.activate([
-            topNavigationBar.topAnchor.constraint(equalTo: view.bottomAnchor),
-            topNavigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            topNavigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-            ])
-        view.addSubview(bottomNavigationBar)
+            topBar.topAnchor.constraint(equalTo: statusBarFillingView.bottomAnchor),
+            topBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            topBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            topBar.heightAnchor.constraint(equalToConstant: 44)
+        ])
+        view.addSubview(bottomBar)
         NSLayoutConstraint.activate([
-            bottomNavigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            bottomNavigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            bottomNavigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-            ])
+            bottomBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomBar.heightAnchor.constraint(equalToConstant: 44)
+        ])
     }
     
-    func showUpBars() {
-        topNavigationBar.alpha = 1
-        bottomNavigationBar.alpha = 1
-        isHidden = false
+    func showStatusBar() {
         viewController?.statusBarShouldBeHidden = false
         viewController?.setNeedsStatusBarAppearanceUpdate()
     }
     
-    func hideBars() {
-        topNavigationBar.alpha = 0
-        bottomNavigationBar.alpha = 0
-        isHidden = true
+    func showBars() {
+        statusBarFillingView.alpha = 1
+        topBar.alpha = 1
+        bottomBar.alpha = 1
+        isHidden = false
+        showStatusBar()
+    }
+    
+    func hideStatusBar() {
         viewController?.statusBarShouldBeHidden = true
         viewController?.setNeedsStatusBarAppearanceUpdate()
     }
     
+    func hideBars() {
+        statusBarFillingView.alpha = 0
+        topBar.alpha = 0
+        bottomBar.alpha = 0
+        isHidden = true
+        hideStatusBar()
+    }
+    
     func changeState() {
-        let action = self.isHidden ? self.showUpBars : self.hideBars
+        let action = self.isHidden ? self.showBars : self.hideBars
         UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: {
             action()
         })

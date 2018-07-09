@@ -12,7 +12,11 @@ class ScrollView: UIScrollView {
     static func getCustomScrollView() -> ScrollView {
         let scrollView = ScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.contentInsetAdjustmentBehavior = .never
+        if #available(iOS 11.0, *) {
+            scrollView.contentInsetAdjustmentBehavior = .never
+        } else {
+            // Fallback on earlier versions
+        }
         scrollView.alwaysBounceVertical = true
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
