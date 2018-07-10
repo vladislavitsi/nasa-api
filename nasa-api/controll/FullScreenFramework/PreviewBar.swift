@@ -65,12 +65,21 @@ class PreviewBar {
         viewController?.setNeedsStatusBarAppearanceUpdate()
     }
     
-    func showBars() {
-        statusBarFillingView.alpha = 1
-        topBar.alpha = 1
-        bottomBar.alpha = 1
-        isHidden = false
-        showStatusBar()
+    func showBars(animated: Bool = false) {
+        let action = { [unowned self] in
+            self.statusBarFillingView.alpha = 1
+            self.topBar.alpha = 1
+            self.bottomBar.alpha = 1
+            self.isHidden = false
+            self.showStatusBar()
+        }
+        if animated {
+            UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: {
+                action()
+            })
+        } else {
+            action()
+        }
     }
     
     func hideStatusBar() {
@@ -78,18 +87,25 @@ class PreviewBar {
         viewController?.setNeedsStatusBarAppearanceUpdate()
     }
     
-    func hideBars() {
-        statusBarFillingView.alpha = 0
-        topBar.alpha = 0
-        bottomBar.alpha = 0
-        isHidden = true
-        hideStatusBar()
+    func hideBars(animated: Bool = false) {
+        let action = { [unowned self] in
+            self.statusBarFillingView.alpha = 0
+            self.topBar.alpha = 0
+            self.bottomBar.alpha = 0
+            self.isHidden = true
+            self.hideStatusBar()
+        }
+        if animated {
+            UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: {
+                action()
+            })
+        } else {
+            action()
+        }
     }
     
     func changeState() {
         let action = self.isHidden ? self.showBars : self.hideBars
-        UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: {
-            action()
-        })
+        action(true)
     }
 }

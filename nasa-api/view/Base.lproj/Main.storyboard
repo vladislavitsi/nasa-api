@@ -25,7 +25,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="rEd-B2-3EB">
                                         <rect key="frame" x="15" y="10" width="345" height="394"/>
                                         <subviews>
-                                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0C6-Xw-j6v">
+                                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="0C6-Xw-j6v">
                                                 <rect key="frame" x="0.0" y="0.0" width="345" height="259"/>
                                                 <gestureRecognizers/>
                                                 <constraints>
@@ -115,4 +115,7 @@
             <point key="canvasLocation" x="-106" y="-35"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Image" width="512" height="393"/>
+    </resources>
 </document>

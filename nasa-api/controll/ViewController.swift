@@ -35,9 +35,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         scrollView.addSubview(refreshControl)
         
-        refreshData { [unowned self] in
-            self.imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.openImage)))
-        }
+        refreshData()
+        self.imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.openImage)))
         
     }
     
@@ -60,7 +59,7 @@ class ViewController: UIViewController {
         }
         
         dispatchGroup.notify(queue: DispatchQueue.main) {
-            completion?()
+//            completion?()
         }
     }
     

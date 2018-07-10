@@ -67,6 +67,10 @@ public class FullScreenImageViewController: UIViewController {
     
     var statusBarShouldBeHidden = false
     
+    var panGestureRecognizer: UIPanGestureRecognizer!
+    
+    var initialCenter = CGPoint.zero
+    
     //    MARK: Initializers
     
     init(with image: UIImage) {
@@ -122,14 +126,49 @@ public class FullScreenImageViewController: UIViewController {
     
     
     override public func viewDidLoad() {
+        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moved(_:)))
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
         let doubleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(doubleTapped(_:)))
         doubleTapGestureRecognizer.numberOfTapsRequired = 2
         tapGestureRecognizer.require(toFail: doubleTapGestureRecognizer)
+        doubleTapGestureRecognizer.require(toFail: panGestureRecognizer)
+        scrollView.addGestureRecognizer(panGestureRecognizer)
         scrollView.addGestureRecognizer(doubleTapGestureRecognizer)
         scrollView.addGestureRecognizer(tapGestureRecognizer)
         previewBars.applyToFullScreenView(self)
 }
+    
+    @objc func moved(_ gestureRecognizer: UIPanGestureRecognizer) {
+        guard gestureRecognizer.view != nil else {return}
+        let piece = gestureRecognizer.view!
+        let translation = gestureRecognizer.translation(in: piece.superview)
+        if gestureRecognizer.state == .began {
+            self.initialCenter = piece.center
+        }
+        if gestureRecognizer.state != .cancelled {
+            previewBars.hideBars()
+            let newCenter = CGPoint(x: initialCenter.x, y: initialCenter.y + translation.y)
+            piece.center = newCenter
+            var alpha = CGFloat(1.0)
+            if piece.center != initialCenter {
+                let yOffset = abs(translation.y)
+                alpha = 1 - 0.005 * (yOffset < 100 ? yOffset : 100)
+            }
+            view.backgroundColor = view.backgroundColor?.withAlphaComponent(alpha)
+        }
+        if gestureRecognizer.state == .ended || gestureRecognizer.state == .cancelled {
+            if abs(gestureRecognizer.velocity(in: piece.superview).y) > 700 {
+                dissmiss()
+            }
+            if abs(translation.y) > 120 {
+                dissmiss()
+            }
+            UIView.animate(withDuration: 0.3) { [unowned self] in
+                piece.center = self.initialCenter
+                self.view.backgroundColor = self.view.backgroundColor?.withAlphaComponent(1)
+            }
+        }
+    }
     
     override public func viewDidAppear(_ animated: Bool) {
         imageViewToHide?.alpha = 0.01
@@ -191,7 +230,7 @@ public class FullScreenImageViewController: UIViewController {
     
     func dissmiss() {
         scrollView.delegate = nil
-        UIView.transition(with: imageView, duration: 0.3, options: [.allowAnimatedContent], animations: {[unowned self] in
+        UIView.transition(with: imageView, duration: 0.4, options: [.allowAnimatedContent], animations: {[unowned self] in
             self.imageViewToHide?.alpha = 1.0
             self.view.alpha = 0.0
             self.statusBarShouldBeHidden = false
@@ -209,13 +248,12 @@ extension FullScreenImageViewController: UIScrollViewDelegate {
         return imageView
     }
     
-    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if abs(scrollView.contentOffset.y) > 100 && scrollView.zoomScale == 1 {
-            dissmiss()
-        }
-    }
-    
     public func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        if scrollView.zoomScale == 1 {
+            panGestureRecognizer.isEnabled = true
+        } else {
+            panGestureRecognizer.isEnabled = false
+        }
         centerZoomView()
     }
     
@@ -226,21 +264,6 @@ extension FullScreenImageViewController: UIScrollViewDelegate {
             constraintY.constant = max((scrollView.bounds.size.height - imageView.frame.size.height)/2 - verticalGap, -verticalGap)
         }
         view.layoutIfNeeded()
-    }
-    
-    public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        if abs(velocity.y) > 0.5 && scrollView.zoomScale == 1 {
-            dissmiss()
-        }
-    }
-    
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        var alpha = CGFloat(1.0)
-        if scrollView.zoomScale == scrollView.minimumZoomScale {
-            let yOffset = abs(scrollView.contentOffset.y)
-            alpha = 1 - 0.005 * (yOffset < 100 ? yOffset : 100)
-        }
-        view.backgroundColor = view.backgroundColor?.withAlphaComponent(alpha)
     }
 }
 
