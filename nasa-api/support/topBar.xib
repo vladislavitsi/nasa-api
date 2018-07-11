@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,32 +25,34 @@
                     </state>
                 </button>
                 <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="751" distribution="fillEqually" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="WUT-gO-xKd">
-                    <rect key="frame" x="153" y="0.0" width="69.5" height="44"/>
+                    <rect key="frame" x="153" y="10" width="69.5" height="24"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="1" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Df-1G-mh9">
-                            <rect key="frame" x="0.0" y="0.0" width="18.5" height="44"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <rect key="frame" x="0.0" y="0.0" width="18.5" height="24"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Of" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m4P-jS-A51">
-                            <rect key="frame" x="25.5" y="0.0" width="18.5" height="44"/>
+                            <rect key="frame" x="25.5" y="0.0" width="18.5" height="24"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i2M-YW-lcH">
-                            <rect key="frame" x="51" y="0.0" width="18.5" height="44"/>
+                            <rect key="frame" x="51" y="0.0" width="18.5" height="24"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                 </stackView>
-                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zs2-jz-NDA">
-                    <rect key="frame" x="345" y="0.0" width="30" height="44"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                    <state key="normal" title="⋮">
+                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zs2-jz-NDA">
+                    <rect key="frame" x="340" y="7" width="30" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="zs2-jz-NDA" secondAttribute="height" multiplier="1:1" id="7a9-GG-0xh"/>
+                    </constraints>
+                    <state key="normal" image="Kebab menu">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                 </button>
@@ -57,20 +60,20 @@
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="Y68-vR-MW4" secondAttribute="bottom" id="2eY-ho-Fcf"/>
-                <constraint firstAttribute="bottom" secondItem="WUT-gO-xKd" secondAttribute="bottom" id="JlY-4a-Ymn"/>
-                <constraint firstAttribute="trailing" secondItem="zs2-jz-NDA" secondAttribute="trailing" id="LJh-uJ-ZMD"/>
-                <constraint firstAttribute="bottom" secondItem="zs2-jz-NDA" secondAttribute="bottom" id="Qag-p9-fZq"/>
+                <constraint firstAttribute="bottom" secondItem="WUT-gO-xKd" secondAttribute="bottom" constant="10" id="JlY-4a-Ymn"/>
+                <constraint firstAttribute="trailing" secondItem="zs2-jz-NDA" secondAttribute="trailing" constant="5" id="LJh-uJ-ZMD"/>
+                <constraint firstAttribute="bottom" secondItem="zs2-jz-NDA" secondAttribute="bottom" constant="7" id="Qag-p9-fZq"/>
                 <constraint firstItem="WUT-gO-xKd" firstAttribute="centerX" secondItem="AyO-6K-IN2" secondAttribute="centerX" id="Y4n-Zz-RVc"/>
                 <constraint firstItem="Y68-vR-MW4" firstAttribute="top" secondItem="AyO-6K-IN2" secondAttribute="top" id="bfy-iP-4pI"/>
-                <constraint firstItem="zs2-jz-NDA" firstAttribute="top" secondItem="AyO-6K-IN2" secondAttribute="top" id="ipe-R9-LcB"/>
-                <constraint firstItem="WUT-gO-xKd" firstAttribute="top" secondItem="AyO-6K-IN2" secondAttribute="top" id="sKg-pp-BJe"/>
+                <constraint firstItem="zs2-jz-NDA" firstAttribute="top" secondItem="AyO-6K-IN2" secondAttribute="top" constant="7" id="ipe-R9-LcB"/>
+                <constraint firstItem="WUT-gO-xKd" firstAttribute="top" secondItem="AyO-6K-IN2" secondAttribute="top" constant="10" id="sKg-pp-BJe"/>
                 <constraint firstItem="Y68-vR-MW4" firstAttribute="leading" secondItem="AyO-6K-IN2" secondAttribute="leading" id="zRU-pO-3G8"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="3Ql-Qe-w7s"/>
-            <point key="canvasLocation" x="289" y="-700"/>
+            <point key="canvasLocation" x="288.5" y="-700"/>
         </view>
         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1FY-C9-X1v">
             <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
@@ -79,4 +82,7 @@
             <point key="canvasLocation" x="138" y="-724"/>
         </button>
     </objects>
+    <resources>
+        <image name="Kebab menu" width="25" height="25"/>
+    </resources>
 </document>

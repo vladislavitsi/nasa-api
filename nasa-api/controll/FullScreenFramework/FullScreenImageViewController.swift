@@ -12,7 +12,7 @@ public extension FullScreenImageViewController {
     
     //    MARK: Factory method
     
-    static func newViewController(for imageView: UIImageView) -> UIViewController {
+    static func newViewController(for imageView: UIImageView) -> FullScreenImageViewController {
         guard let image = imageView.image else {
             fatalError("image is not found")
         }
@@ -34,7 +34,7 @@ public class FullScreenImageViewController: UIViewController {
     
     var imageView: UIImageView!
     var scrollView: ScrollView!
-    var previewBars = PreviewBar()
+    public var previewBars = PreviewBar()
     
     
     //    MARK: Status Bar settings
@@ -51,6 +51,14 @@ public class FullScreenImageViewController: UIViewController {
     }
     
     //    MARK: Properties
+    public var imageDescription: String? {
+        set {
+            previewBars.imageDescription = newValue
+        }
+        get {
+            return previewBars.imageDescription
+        }
+    }
     
     fileprivate var initialFrame: CGRect = CGRect.zero
     fileprivate var image: UIImage
@@ -219,7 +227,7 @@ public class FullScreenImageViewController: UIViewController {
         self.scrollView.zoomScale = 1.0
         self.view.layoutIfNeeded()
     }
-
+ 
     @objc private func doubleTapped(_ recognizer: UITapGestureRecognizer) {
         scrollView.zoomWithAnimation()
     }
@@ -230,7 +238,7 @@ public class FullScreenImageViewController: UIViewController {
     
     func dissmiss() {
         scrollView.delegate = nil
-        UIView.transition(with: imageView, duration: 0.4, options: [.allowAnimatedContent], animations: {[unowned self] in
+        UIView.transition(with: imageView, duration: 0.3, options: [.allowAnimatedContent], animations: {[unowned self] in
             self.imageViewToHide?.alpha = 1.0
             self.view.alpha = 0.0
             self.statusBarShouldBeHidden = false

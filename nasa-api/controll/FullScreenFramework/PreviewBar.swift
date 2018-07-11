@@ -9,13 +9,24 @@
 import UIKit
 
 
-class PreviewBar {
+public class PreviewBar {
+    
+    public var imageDescription: String? {
+        set {
+            bottomBarDescription.text = newValue
+        }
+        get {
+            return bottomBarDescription.text
+        }
+    }
     
     private let statusBarFillingView = UIView()
-    private let topBar = TopBar()
-    private let bottomBar = UIView()
+    public let topBar = TopBar()
+    private let bottomBar = BottomBar()
     private var viewController: FullScreenImageViewController? = nil
     private var isHidden = true
+    private let bottomBarDescription = UILabel()
+
     
     init() {
         statusBarFillingView.translatesAutoresizingMaskIntoConstraints = false
@@ -23,6 +34,7 @@ class PreviewBar {
         
         topBar.translatesAutoresizingMaskIntoConstraints = false
         topBar.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        topBar.previewBar = self
         
         bottomBar.translatesAutoresizingMaskIntoConstraints = false
         bottomBar.backgroundColor = UIColor.black.withAlphaComponent(0.6)
@@ -57,6 +69,15 @@ class PreviewBar {
             bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             bottomBar.heightAnchor.constraint(equalToConstant: 44)
+        ])
+        
+        bottomBarDescription.font = UIFont.systemFont(ofSize: 16)
+        bottomBarDescription.textColor = .white
+        bottomBarDescription.translatesAutoresizingMaskIntoConstraints = false
+        bottomBar.addSubview(bottomBarDescription)
+        NSLayoutConstraint.activate([
+            bottomBarDescription.leftAnchor.constraint(equalTo: bottomBar.leftAnchor, constant: 10),
+            bottomBarDescription.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor)
         ])
     }
     
@@ -107,5 +128,13 @@ class PreviewBar {
     func changeState() {
         let action = self.isHidden ? self.showBars : self.hideBars
         action(true)
+    }
+    
+    func showActionSheet(_ actionSheet: UIAlertController) {
+        viewController?.present(actionSheet, animated: true, completion: nil)
+    }
+    
+    func backButtonPressed(_ button: UIButton) {
+        viewController?.dissmiss()
     }
 }

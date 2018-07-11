@@ -65,6 +65,7 @@ class ViewController: UIViewController {
     
     @objc func openImage() {
         let fullScreenImageViewController = FullScreenImageViewController.newViewController(for: imageView)
+        fullScreenImageViewController.imageDescription = titleView.text
         present(fullScreenImageViewController, animated: false)
     }
 }
