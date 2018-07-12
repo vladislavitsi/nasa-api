@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PageCounter: UIStackView {
+public class PageCounter: UIStackView {
     
     private static let defaultFont = UIFont(name: "Helvetica Neue", size: 20)
     
@@ -36,12 +36,12 @@ class PageCounter: UIStackView {
         }
     }
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
     }

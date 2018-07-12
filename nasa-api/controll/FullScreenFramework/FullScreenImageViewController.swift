@@ -154,7 +154,7 @@ public class FullScreenImageViewController: UIViewController {
             self.initialCenter = piece.center
         }
         if gestureRecognizer.state != .cancelled {
-            previewBars.hideBars()
+//            previewBars.hideBars(animated: true)
             let newCenter = CGPoint(x: initialCenter.x, y: initialCenter.y + translation.y)
             piece.center = newCenter
             var alpha = CGFloat(1.0)

@@ -13,7 +13,8 @@ public class TopBar: UIView {
     weak var previewBar: PreviewBar?
     
     private let backButton = UIButton()
-    private let pageCounter = PageCounter()
+    public let pageCounter = PageCounter()
+    
     public let optionsButton = UIButton(type: UIButtonType.custom)
     
     override init(frame: CGRect) {
