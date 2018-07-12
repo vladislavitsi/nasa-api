@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		32098DC320F5DC2400D4E0A5 /* PagesCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32098DC220F5DC2400D4E0A5 /* PagesCounter.swift */; };
+		323419DB20F7380000F0399D /* ImagePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323419DA20F7380000F0399D /* ImagePreviewViewController.swift */; };
 		32B3835D20F38D900047B658 /* topBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32B3835C20F38D900047B658 /* topBar.xib */; };
 		32B3835F20F392FD0047B658 /* TopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B3835E20F392FD0047B658 /* TopBar.swift */; };
 		32D4548420F6472100341C57 /* botomBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D4548320F6472100341C57 /* botomBar.xib */; };
@@ -31,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		32098DC220F5DC2400D4E0A5 /* PagesCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagesCounter.swift; sourceTree = "<group>"; };
+		323419DA20F7380000F0399D /* ImagePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePreviewViewController.swift; sourceTree = "<group>"; };
 		32B3835C20F38D900047B658 /* topBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = topBar.xib; sourceTree = "<group>"; };
 		32B3835E20F392FD0047B658 /* TopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBar.swift; sourceTree = "<group>"; };
 		32D4548320F6472100341C57 /* botomBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = botomBar.xib; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 				32B3835E20F392FD0047B658 /* TopBar.swift */,
 				32098DC220F5DC2400D4E0A5 /* PagesCounter.swift */,
 				32D4548520F649D200341C57 /* BottomBar.swift */,
+				323419DA20F7380000F0399D /* ImagePreviewViewController.swift */,
 			);
 			path = FullScreenFramework;
 			sourceTree = "<group>";
@@ -287,6 +290,7 @@
 			files = (
 				32098DC320F5DC2400D4E0A5 /* PagesCounter.swift in Sources */,
 				32F5D9F020E240580029D8EF /* ViewController.swift in Sources */,
+				323419DB20F7380000F0399D /* ImagePreviewViewController.swift in Sources */,
 				32E42CB120EE5E360078E3D7 /* ScrollView.swift in Sources */,
 				32D59FD320EF4614007EEB88 /* CGSize.swift in Sources */,
 				32F5DA0820E27E6D0029D8EF /* FullScreenImageViewController.swift in Sources */,

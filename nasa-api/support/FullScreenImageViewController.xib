@@ -38,25 +38,22 @@
                         <constraint firstAttribute="trailing" secondItem="FVu-iQ-Cpl" secondAttribute="trailing" priority="750" constant="1000" id="orc-3p-FBz"/>
                     </constraints>
                 </scrollView>
-                <view alpha="0.65000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9gq-jx-Kxt">
-                    <rect key="frame" x="0.0" y="623" width="375" height="44"/>
-                    <color key="backgroundColor" red="0.55599619289340096" green="0.55599619289340096" blue="0.55599619289340096" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <color key="tintColor" red="0.55599619290000002" green="0.55599619290000002" blue="0.55599619290000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="Uod-Hf-ZnC"/>
-                    </constraints>
-                </view>
+                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="Vu1-xH-0kC">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="currentPageIndicatorTintColor" red="0.62706700796749471" green="1" blue="0.3166935786318501" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </pageControl>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <rect key="contentStretch" x="0.0" y="0.0" width="0.94999999999999996" height="1"/>
             <constraints>
                 <constraint firstItem="m2u-Kz-a1f" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="1XE-2V-4h2"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="9gq-jx-Kxt" secondAttribute="bottom" id="7UQ-yt-r5i"/>
+                <constraint firstAttribute="trailing" secondItem="Vu1-xH-0kC" secondAttribute="trailing" id="KmE-fX-o5j"/>
                 <constraint firstItem="m2u-Kz-a1f" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="aSv-9o-Kar"/>
                 <constraint firstAttribute="bottom" secondItem="m2u-Kz-a1f" secondAttribute="bottom" id="bMp-69-zXJ"/>
+                <constraint firstItem="Vu1-xH-0kC" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="cri-3Z-Nyd"/>
+                <constraint firstItem="Vu1-xH-0kC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="gmj-vk-kxI"/>
                 <constraint firstItem="m2u-Kz-a1f" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="iCT-0o-PS5"/>
-                <constraint firstItem="9gq-jx-Kxt" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ikE-2Y-aIL"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="9gq-jx-Kxt" secondAttribute="trailing" id="rMV-2e-eFe"/>
+                <constraint firstAttribute="bottom" secondItem="Vu1-xH-0kC" secondAttribute="bottom" id="lCc-Mz-UDs"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3" propertyAccessControl="none"/>

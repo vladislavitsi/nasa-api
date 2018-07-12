@@ -30,8 +30,7 @@ class ViewController: UIViewController {
     
     private let apodDAO: ApodDAO = ApodDAOImpl()
     
-    
-    override func viewDidLoad() {
+        override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.addSubview(refreshControl)
         
@@ -64,8 +63,9 @@ class ViewController: UIViewController {
     }
     
     @objc func openImage() {
-        let fullScreenImageViewController = FullScreenImageViewController.newViewController(for: imageView)
-        fullScreenImageViewController.imageDescription = titleView.text
+        let fullScreenImageViewController = FullScreenImageViewController()
+//        fullScreenImageViewController.imageDescription = titleView.text
+        fullScreenImageViewController.images = ([imageView.image, UIImage(named: "Image")] as! [UIImage])
         fullScreenImageViewController.previewBars.topBar.pageCounter.isHidden = true
         present(fullScreenImageViewController, animated: false)
     }
