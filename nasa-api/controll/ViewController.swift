@@ -64,7 +64,8 @@ class ViewController: UIViewController {
     
     @objc func openImage() {
         let fullScreenImageViewController = FullScreenImageViewController()
-//        fullScreenImageViewController.imageDescription = titleView.text
+        fullScreenImageViewController.initialImageView = imageView
+        fullScreenImageViewController.viewToHide = imageView
         fullScreenImageViewController.images = ([imageView.image, UIImage(named: "Image")] as! [UIImage])
         fullScreenImageViewController.previewBars.topBar.pageCounter.isHidden = true
         present(fullScreenImageViewController, animated: false)

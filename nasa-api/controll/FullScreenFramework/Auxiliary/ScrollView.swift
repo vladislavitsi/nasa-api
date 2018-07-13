@@ -17,7 +17,8 @@ class ScrollView: UIScrollView {
         } else {
             // Fallback on earlier versions
         }
-        scrollView.alwaysBounceVertical = true
+        scrollView.backgroundColor = .clear
+        scrollView.alwaysBounceVertical = false
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.maximumZoomScale = 3.0

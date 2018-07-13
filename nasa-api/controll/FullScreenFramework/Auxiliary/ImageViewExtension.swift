@@ -9,12 +9,18 @@
 import UIKit
 
 extension UIImageView {
-    static func getCustomImageView(for image: UIImage, initialFrame: CGRect) -> UIImageView {
-        let imageView = UIImageView(frame: initialFrame)
+    static func getCustomImageView(for image: UIImage, initialFrame: CGRect?) -> UIImageView {
+        let imageView = UIImageView(frame: initialFrame ?? CGRect.zero)
         imageView.isUserInteractionEnabled = true
         imageView.isMultipleTouchEnabled = true
         imageView.contentMode = .scaleAspectFit
         imageView.image = image
         return imageView
+    }
+}
+
+extension UIView {
+    var globalFrame :CGRect? {
+        return self.superview?.convert(self.frame, to: nil)
     }
 }
