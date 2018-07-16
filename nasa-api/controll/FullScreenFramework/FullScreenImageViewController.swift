@@ -10,9 +10,9 @@ import UIKit
 
 public class FullScreenImageViewController: UIPageViewController {
     
-    public var previewBars = PreviewBar()
+    public var previewBars: PreviewBar?
     var initialImageView: UIImageView?
-    var viewToHide: UIView?
+    var actionSheet: UIAlertController?
     var statusBarShouldBeHidden = false
     var imagePreviewViewControllers = [ImagePreviewViewController]()
     var images: [UIImage]? {
@@ -20,7 +20,7 @@ public class FullScreenImageViewController: UIPageViewController {
             updateImagePreviewViewControllers(for: images!)
         }
     }
-    
+
     //    MARK: Initializers
     init() {
         super.init(transitionStyle: .scroll,
@@ -30,6 +30,8 @@ public class FullScreenImageViewController: UIPageViewController {
         modalPresentationStyle = .overFullScreen
         modalPresentationCapturesStatusBarAppearance = true
         dataSource = self
+        previewBars = PreviewBar(on: self.view)
+        previewBars?.delegate = self
     }
     
     public required init?(coder aDecoder: NSCoder) {
@@ -39,18 +41,17 @@ public class FullScreenImageViewController: UIPageViewController {
     func updateImagePreviewViewControllers(for images: [UIImage]) {
         var imagePreviewViewControllers = [ImagePreviewViewController]()
         for (number, image) in images.enumerated() {
-            imagePreviewViewControllers.append(ImagePreviewViewController(with: image, controller: self, shouldAppearAnimated: number == 0))
+            imagePreviewViewControllers.append(ImagePreviewViewController(with: image, delegate: self, shouldAppearAnimated: number == 0))
         }
         self.imagePreviewViewControllers = imagePreviewViewControllers
         setViewControllers([imagePreviewViewControllers.first!], direction: .forward, animated: false)
     }
     
     override public func viewDidAppear(_ animated: Bool) {
-        self.viewToHide?.alpha = 0.01
+        self.initialImageView?.alpha = 0.01
         UIView.animate(withDuration: 0.3) { [unowned self] in
             self.view.backgroundColor = .black
-            self.previewBars.applyToFullScreenView(self)
-            self.previewBars.showBars()
+            self.previewBars?.showBars()
         }
         UIView.animate(withDuration: 0.4,
                        delay: 0,
@@ -64,12 +65,12 @@ public class FullScreenImageViewController: UIPageViewController {
     
     func dissmiss() {
         UIView.animate(withDuration: 0.3, delay: 0.0, options: [.allowAnimatedContent], animations: { [unowned self] in
-            self.viewToHide?.alpha = 1
+            self.initialImageView?.alpha = 1
             self.view.alpha = 0.0
             self.statusBar(shouldBeHidden: false)
             self.setNeedsStatusBarAppearanceUpdate()
-        }, completion: { [unowned self] _ in
-            self.presentingViewController?.dismiss(animated: false)
+            }, completion: { [unowned self] _ in
+                self.presentingViewController?.dismiss(animated: false)
         })
     }
 }
@@ -98,7 +99,7 @@ extension FullScreenImageViewController: FullScreenControllerProtocol {
     }
     
     func didTap() {
-        previewBars.changeState()
+        previewBars?.changeState()
     }
     
     func didDoubleTap() {
@@ -122,6 +123,9 @@ extension FullScreenImageViewController: FullScreenControllerProtocol {
         return nil
     }
     
+    func didSwipe() {
+        statusBar(shouldBeHidden: false)
+    }
 }
 
 //    MARK: UIPageViewControllerDataSource
@@ -148,4 +152,30 @@ extension FullScreenImageViewController: UIPageViewControllerDataSource {
         }
         return imagePreviewViewControllers[newIndex+1]
     }
+}
+
+extension FullScreenImageViewController: PreviewBarDelegate {
+    func backButtonPressed() {
+        dissmiss()
+    }
+    
+    func actionButtonPressed() {
+        if let actionSheet = actionSheet {
+            present(actionSheet, animated: true)
+        }
+    }
+    
+    func imageCount() -> Int {
+        return images?.count ?? 0
+    }
+    
+    func currentImageNumber() -> Int {
+        return 0
+    }
+    
+    func setStatusBar(isHidden: Bool) {
+        statusBar(shouldBeHidden: isHidden)
+    }
+    
+    
 }

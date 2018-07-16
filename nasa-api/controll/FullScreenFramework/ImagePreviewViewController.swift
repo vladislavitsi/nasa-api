@@ -10,7 +10,7 @@ import UIKit
 
 class ImagePreviewViewController: UIViewController {
 
-    private weak var fullScreenImageController: FullScreenControllerProtocol?
+    private weak var delegate: FullScreenControllerProtocol?
     private let image: UIImage
     private var imageView: UIImageView!
     private var scrollView: ScrollView!
@@ -26,11 +26,11 @@ class ImagePreviewViewController: UIViewController {
     private var pageScrollView: UIScrollView?
     private var dimensionIsLocked = false
     
-    init (with image: UIImage, controller: FullScreenControllerProtocol, shouldAppearAnimated: Bool = false) {
+    init (with image: UIImage, delegate: FullScreenControllerProtocol, shouldAppearAnimated: Bool = false) {
         self.image = image
-        fullScreenImageController = controller
+        self.delegate = delegate
         self.shouldAppearAnimated = shouldAppearAnimated
-        pageScrollView = fullScreenImageController?.getPageScrollView()
+        pageScrollView = delegate.getPageScrollView()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -81,7 +81,7 @@ class ImagePreviewViewController: UIViewController {
             scrollView.heightAnchor.constraint(equalTo: view.heightAnchor),
         ])
         
-        let initialFrame = shouldAppearAnimated ? fullScreenImageController?.getInitialImageFrame() : CGRect.zero
+        let initialFrame = shouldAppearAnimated ? delegate?.getInitialImageFrame() : CGRect.zero
         imageView = UIImageView.getCustomImageView(for: image, initialFrame: initialFrame)
         scrollView.addSubview(imageView)
         
@@ -93,9 +93,6 @@ class ImagePreviewViewController: UIViewController {
         if shouldAppearAnimated == false {
             initialLocateView()
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
         scrollView.delegate = self
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
         let doubleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(doubleTapped(_:)))
@@ -151,12 +148,12 @@ class ImagePreviewViewController: UIViewController {
 
 extension ImagePreviewViewController {
     @objc private func tapped(_ recognizer: UITapGestureRecognizer) {
-        fullScreenImageController?.didTap()
+        delegate?.didTap()
     }
     
     @objc private func doubleTapped(_ recognizer: UITapGestureRecognizer) {
         scrollView.zoomWithAnimation()
-        fullScreenImageController?.didDoubleTap()
+        delegate?.didDoubleTap()
     }
     
     @objc func moved(_ gestureRecognizer: UIPanGestureRecognizer) {
@@ -183,14 +180,19 @@ extension ImagePreviewViewController {
             piece.center = CGPoint(x: initialCenter.x, y: initialCenter.y + translation.y)
             let yOffset = abs(translation.y)
             let alpha = 1 - 0.003 * (yOffset < 150 ? yOffset : 150)
-            fullScreenImageController?.apply(alpha: alpha)
+            delegate?.apply(alpha: alpha)
+            if alpha < 1.0 {
+                delegate?.didSwipe()
+            }
         }
         if gestureRecognizer.state == .ended {
             if abs(gestureRecognizer.velocity(in: piece.superview).y) > 700 {
-                fullScreenImageController?.didSwipeBack()
+                delegate?.didSwipeBack()
+                return
             }
             if abs(translation.y) > 150 {
-                fullScreenImageController?.didSwipeBack()
+                delegate?.didSwipeBack()
+                return
             }
         }
         if gestureRecognizer.state == .ended || gestureRecognizer.state == .cancelled || gestureRecognizer.state == .failed {
@@ -199,7 +201,7 @@ extension ImagePreviewViewController {
             dimensionIsLocked = false
             UIView.animate(withDuration: 0.2) { [unowned self] in
                 piece.center = self.initialCenter
-                self.fullScreenImageController?.apply(alpha: 1.0)
+                self.delegate?.apply(alpha: 1.0)
             }
         }
     }

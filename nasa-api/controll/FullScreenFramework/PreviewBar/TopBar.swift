@@ -8,71 +8,58 @@
 
 import UIKit
 
-public class TopBar: UIView {
+class TopBar: AbstractBar {
     
     weak var previewBar: PreviewBar?
+    weak var delegate: TopBarDelegate?
     
-    private let backButton = UIButton()
-    public let pageCounter = PageCounter()
+    let backButton = UIButton()
+    let pageCounter = PageCounter()
+    let actionButton = UIButton(type: UIButtonType.custom)
     
-    public let optionsButton = UIButton(type: UIButtonType.custom)
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        commonInit()
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        commonInit()
-    }
-    
-    func commonInit() {
-        //backButton.setTitle("←", for: .normal)
+    override init() {
+        super.init()
         backButton.setImage(UIImage(named: "Back arrow"), for: .normal)
         backButton.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(backButton)
+        view.addSubview(backButton)
         NSLayoutConstraint.activate([
-            backButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 7),
-            backButton.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-            backButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
+            backButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 7),
+            backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 5),
+            backButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -5),
             backButton.widthAnchor.constraint(equalTo: backButton.heightAnchor, multiplier: 1)
         ])
-        backButton.addTarget(self, action: #selector(backButtonPressed(_:)), for: .touchUpInside)
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         
         pageCounter.translatesAutoresizingMaskIntoConstraints = false
         
-        addSubview(pageCounter)
+        view.addSubview(pageCounter)
         NSLayoutConstraint.activate([
-            pageCounter.topAnchor.constraint(equalTo: topAnchor),
-            pageCounter.bottomAnchor.constraint(equalTo: bottomAnchor),
-            pageCounter.centerXAnchor.constraint(equalTo: centerXAnchor)
+            pageCounter.topAnchor.constraint(equalTo: view.topAnchor),
+            pageCounter.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            pageCounter.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
         
-        optionsButton.setImage(UIImage(named: "Kebab menu"), for: .normal)
-        optionsButton.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(optionsButton)
+        actionButton.setImage(UIImage(named: "Kebab menu"), for: .normal)
+        actionButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(actionButton)
         NSLayoutConstraint.activate([
-            optionsButton.rightAnchor.constraint(equalTo: rightAnchor, constant: 0),
-            optionsButton.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-            optionsButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
-            optionsButton.widthAnchor.constraint(equalTo: optionsButton.heightAnchor, multiplier: 1)
+            actionButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
+            actionButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 5),
+            actionButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -5),
+            actionButton.widthAnchor.constraint(equalTo: actionButton.heightAnchor, multiplier: 1)
         ])
         
-        optionsButton.addTarget(self, action: #selector(pressed), for: .touchUpInside)
+        actionButton.addTarget(self, action: #selector(actionButtonPressed), for: .touchUpInside)
     }
     
-    @objc func pressed() {
-        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        
-        actionSheet.addAction(cancelAction)
-        previewBar?.showActionSheet(actionSheet)
+    @objc func actionButtonPressed() {
+        delegate?.actionButtonPressed()
     }
     
-    @objc func backButtonPressed(_ button: UIButton) {
-        previewBar?.backButtonPressed(button)
+    @objc func backButtonPressed() {
+        delegate?.backButtonPressed()
     }
     
 }
+
+

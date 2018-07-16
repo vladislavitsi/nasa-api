@@ -15,4 +15,5 @@ protocol FullScreenControllerProtocol: class {
     func didDoubleTap()
     func apply(alpha: CGFloat)
     func didSwipeBack()
+    func didSwipe()
 }

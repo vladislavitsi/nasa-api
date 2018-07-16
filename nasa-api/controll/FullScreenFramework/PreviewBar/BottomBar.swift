@@ -8,6 +8,16 @@
 
 import UIKit
 
-class BottomBar: UIView {
+class BottomBar: AbstractBar {
     
+}
+
+
+class AbstractBar {
+    let view = UIView()
+    
+    init() {
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+    }
 }

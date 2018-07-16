@@ -11,88 +11,59 @@ import UIKit
 
 public class PreviewBar {
     
-    public var imageDescription: String? {
-        set {
-            bottomBarDescription.text = newValue
-        }
-        get {
-            return bottomBarDescription.text
-        }
-    }
-    
+    weak var delegate: PreviewBarDelegate?
     private let statusBarFillingView = UIView()
-    public let topBar = TopBar()
+    private let topBar = TopBar()
     private let bottomBar = BottomBar()
-    private var viewController: FullScreenImageViewController? = nil
     private var isHidden = true
-    private let bottomBarDescription = UILabel()
-
     
-    init() {
+    init(on superview: UIView) {
         statusBarFillingView.translatesAutoresizingMaskIntoConstraints = false
         statusBarFillingView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
         
-        topBar.translatesAutoresizingMaskIntoConstraints = false
-        topBar.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        topBar.view.translatesAutoresizingMaskIntoConstraints = false
+        topBar.view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
         topBar.previewBar = self
-        
-        bottomBar.translatesAutoresizingMaskIntoConstraints = false
-        bottomBar.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        topBar.delegate = self
         
         hideBars()
-    }
-    
-    func applyToFullScreenView(_ viewController: FullScreenImageViewController) {
-        self.viewController = viewController
-        guard let view = self.viewController?.view else {
-            return
-        }
-        view.addSubview(statusBarFillingView)
+        
+        superview.addSubview(statusBarFillingView)
         NSLayoutConstraint.activate([
-            statusBarFillingView.topAnchor.constraint(equalTo: view.topAnchor),
-            statusBarFillingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            statusBarFillingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            statusBarFillingView.topAnchor.constraint(equalTo: superview.topAnchor),
+            statusBarFillingView.leadingAnchor.constraint(equalTo: superview.leadingAnchor),
+            statusBarFillingView.trailingAnchor.constraint(equalTo: superview.trailingAnchor),
             statusBarFillingView.heightAnchor.constraint(equalToConstant: 20)
         ])
-        statusBarFillingView.alpha = 1
         
-        view.addSubview(topBar)
+        superview.addSubview(topBar.view)
         NSLayoutConstraint.activate([
-            topBar.topAnchor.constraint(equalTo: statusBarFillingView.bottomAnchor),
-            topBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            topBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            topBar.heightAnchor.constraint(equalToConstant: 44)
-        ])
-        view.addSubview(bottomBar)
-        NSLayoutConstraint.activate([
-            bottomBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomBar.heightAnchor.constraint(equalToConstant: 44)
+            topBar.view.topAnchor.constraint(equalTo: statusBarFillingView.bottomAnchor),
+            topBar.view.leadingAnchor.constraint(equalTo: superview.leadingAnchor),
+            topBar.view.trailingAnchor.constraint(equalTo: superview.trailingAnchor),
+            topBar.view.heightAnchor.constraint(equalToConstant: 44)
         ])
         
-        bottomBarDescription.font = UIFont.systemFont(ofSize: 16)
-        bottomBarDescription.textColor = .white
-        bottomBarDescription.translatesAutoresizingMaskIntoConstraints = false
-        bottomBar.addSubview(bottomBarDescription)
+        superview.addSubview(bottomBar.view)
         NSLayoutConstraint.activate([
-            bottomBarDescription.leftAnchor.constraint(equalTo: bottomBar.leftAnchor, constant: 10),
-            bottomBarDescription.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor)
+            bottomBar.view.bottomAnchor.constraint(equalTo: superview.bottomAnchor),
+            bottomBar.view.leadingAnchor.constraint(equalTo: superview.leadingAnchor),
+            bottomBar.view.trailingAnchor.constraint(equalTo: superview.trailingAnchor),
+            bottomBar.view.heightAnchor.constraint(equalToConstant: 44)
         ])
-    }
-    
-    func showStatusBar() {
-        viewController?.statusBarShouldBeHidden = false
-        viewController?.setNeedsStatusBarAppearanceUpdate()
+        
+        if let pageCount = delegate?.imageCount() {
+            topBar.pageCounter.toLabel.text = String(pageCount)            
+        }
     }
     
     func showBars(animated: Bool = false) {
         let action = { [unowned self] in
             self.statusBarFillingView.alpha = 1
-            self.topBar.alpha = 1
-            self.bottomBar.alpha = 1
+            self.topBar.view.alpha = 1
+            self.bottomBar.view.alpha = 1
             self.isHidden = false
-            self.showStatusBar()
+            self.delegate?.setStatusBar(isHidden: false)
         }
         if animated {
             UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: {
@@ -103,18 +74,13 @@ public class PreviewBar {
         }
     }
     
-    func hideStatusBar() {
-        viewController?.statusBarShouldBeHidden = true
-        viewController?.setNeedsStatusBarAppearanceUpdate()
-    }
-    
     func hideBars(animated: Bool = false) {
         let action = { [unowned self] in
             self.statusBarFillingView.alpha = 0
-            self.topBar.alpha = 0
-            self.bottomBar.alpha = 0
+            self.topBar.view.alpha = 0
+            self.bottomBar.view.alpha = 0
             self.isHidden = true
-            self.hideStatusBar()
+            self.delegate?.setStatusBar(isHidden: true)
         }
         if animated {
             UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: {
@@ -129,12 +95,58 @@ public class PreviewBar {
         let action = self.isHidden ? self.showBars : self.hideBars
         action(true)
     }
-    
-    func showActionSheet(_ actionSheet: UIAlertController) {
-        viewController?.present(actionSheet, animated: true, completion: nil)
+}
+
+extension PreviewBar: PreviewBarInteface {
+    public var topBarView: UIView {
+        return topBar.view
     }
     
-    func backButtonPressed(_ button: UIButton) {
-        viewController?.dissmiss()
+    public var bottomBarView: UIView {
+        return bottomBar.view
+    }
+    
+    public var currentCounterLabel: UILabel {
+        return topBar.pageCounter.currentLabel
+    }
+    
+    public var ofCounterLabel: UILabel {
+        return topBar.pageCounter.ofLabel
+    }
+    
+    public var toCounterLabel: UILabel {
+        return topBar.pageCounter.toLabel
+    }
+    
+    public var backButton: UIButton {
+        return topBar.backButton
+    }
+    
+    public var actionButton: UIButton {
+        return topBar.actionButton
+    }
+    
+    public func didChangePage() {
+        if let newValue = delegate?.currentImageNumber() {
+            topBar.pageCounter.setCurrent(number: String(newValue))
+        }
+    }
+    
+    public func set(actionSheet: UIAlertController) {
+//        topBar.actionButton
+    }
+    
+    public func setPreviewBar(isHidden: Bool) {
+        isHidden ? hideBars() : showBars()
+    }
+}
+
+extension PreviewBar: TopBarDelegate {
+    func backButtonPressed() {
+        delegate?.backButtonPressed()
+    }
+    
+    func actionButtonPressed() {
+        delegate?.actionButtonPressed()
     }
 }

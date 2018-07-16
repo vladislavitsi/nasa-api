@@ -65,9 +65,10 @@ class ViewController: UIViewController {
     @objc func openImage() {
         let fullScreenImageViewController = FullScreenImageViewController()
         fullScreenImageViewController.initialImageView = imageView
-        fullScreenImageViewController.viewToHide = imageView
         fullScreenImageViewController.images = ([imageView.image, UIImage(named: "Image")] as! [UIImage])
-        fullScreenImageViewController.previewBars.topBar.pageCounter.isHidden = true
+        let actionSheet = UIAlertController(title: "Action", message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        fullScreenImageViewController.actionSheet = actionSheet
         present(fullScreenImageViewController, animated: false)
     }
 }
