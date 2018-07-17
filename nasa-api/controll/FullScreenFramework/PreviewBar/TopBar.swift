@@ -10,54 +10,68 @@ import UIKit
 
 class TopBar: AbstractBar {
     
-    weak var previewBar: PreviewBar?
-    weak var delegate: TopBarDelegate?
-    
     let backButton = UIButton()
     let pageCounter = PageCounter()
-    let actionButton = UIButton(type: UIButtonType.custom)
+    let actionButton = UIButton()
+    
+    var actionButtonAction: (() -> Void)?
+    var backButtonAction: (() -> Void)?
     
     override init() {
         super.init()
         backButton.setImage(UIImage(named: "Back arrow"), for: .normal)
         backButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(backButton)
+        
+        var viewLeadingAnchor: NSLayoutXAxisAnchor!
+        if #available(iOS 11.0, *) {
+            viewLeadingAnchor = view.safeAreaLayoutGuide.leadingAnchor
+        } else {
+            viewLeadingAnchor = view.leadingAnchor
+        }
         NSLayoutConstraint.activate([
-            backButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 7),
+            backButton.leadingAnchor.constraint(equalTo: viewLeadingAnchor, constant: 7),
             backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 5),
             backButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -5),
             backButton.widthAnchor.constraint(equalTo: backButton.heightAnchor, multiplier: 1)
         ])
+        
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         
-        pageCounter.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(pageCounter)
+        view.addSubview(pageCounter.view)
         NSLayoutConstraint.activate([
-            pageCounter.topAnchor.constraint(equalTo: view.topAnchor),
-            pageCounter.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            pageCounter.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            pageCounter.view.topAnchor.constraint(equalTo: view.topAnchor),
+            pageCounter.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            pageCounter.view.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
         
-        actionButton.setImage(UIImage(named: "Kebab menu"), for: .normal)
+        
+        actionButton.setImage(UIImage(named: "Meatballs menu"), for: .normal)
         actionButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(actionButton)
+
+        var viewTrailingAnchor: NSLayoutXAxisAnchor!
+        if #available(iOS 11.0, *) {
+            viewTrailingAnchor = view.safeAreaLayoutGuide.trailingAnchor
+        } else {
+            viewTrailingAnchor = view.trailingAnchor
+        }
         NSLayoutConstraint.activate([
-            actionButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
+            actionButton.trailingAnchor.constraint(equalTo: viewTrailingAnchor, constant: -7),
             actionButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 5),
             actionButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -5),
             actionButton.widthAnchor.constraint(equalTo: actionButton.heightAnchor, multiplier: 1)
         ])
-        
         actionButton.addTarget(self, action: #selector(actionButtonPressed), for: .touchUpInside)
     }
     
     @objc func actionButtonPressed() {
-        delegate?.actionButtonPressed()
+        print(backButton.constraints)
+        actionButtonAction?()
     }
     
     @objc func backButtonPressed() {
-        delegate?.backButtonPressed()
+        backButtonAction?()
     }
     
 }

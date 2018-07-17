@@ -8,49 +8,42 @@
 
 import UIKit
 
-public class PageCounter: UIStackView {
+public class PageCounter {
     
     private static let defaultFont = UIFont(name: "Helvetica Neue", size: 20)!
     
+    let view = UIStackView()
     let currentLabel = UILabel()
     let ofLabel = UILabel()
-    let toLabel = UILabel()
+    let allNumberLabel = UILabel()
     
-    private var labels: [UILabel]!
-    
-    public override init(frame: CGRect) {
-        super.init(frame: frame)
-        commonInit()
-    }
-    
-    required public init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        commonInit()
-    }
-    
-    private func commonInit() {
-        labels = [currentLabel, ofLabel, toLabel]
-        
-        spacing = 7
-        axis = .horizontal
-        alignment = .fill
-        distribution = .fillEqually
+    init() {
+        view.spacing = 7
+        view.axis = .horizontal
+        view.alignment = .fill
+        view.distribution = .fillEqually
+        view.translatesAutoresizingMaskIntoConstraints = false
         
         currentLabel.text = "1"
         currentLabel.textAlignment = .right
         ofLabel.text = "Of"
         ofLabel.textAlignment = .center
-        toLabel.text = "1"
-        toLabel.textAlignment = .left
+        allNumberLabel.text = "1"
+        allNumberLabel.textAlignment = .left
         
+        let labels = [currentLabel, ofLabel, allNumberLabel]
         labels.forEach { label in
             label.font = PageCounter.defaultFont
             label.textColor = .white
-            addArrangedSubview(label)
+            view.addArrangedSubview(label)
         }
     }
     
-    func setCurrent(number: String) {
-        currentLabel.text = number
+    func setCurrent(number: Int) {
+        currentLabel.text = String(number)
+    }
+    
+    func setAll(number: Int) {
+        allNumberLabel.text = String(number)
     }
 }

@@ -77,7 +77,7 @@
                         <constraints>
                             <constraint firstItem="ZMg-4H-FrI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="8gW-dC-uoF"/>
                             <constraint firstItem="ZMg-4H-FrI" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Fba-KK-VDP"/>
-                            <constraint firstAttribute="trailing" secondItem="ZMg-4H-FrI" secondAttribute="trailing" id="X9b-Ss-uem"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ZMg-4H-FrI" secondAttribute="trailing" id="X9b-Ss-uem"/>
                             <constraint firstItem="ZMg-4H-FrI" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="dT4-Gz-kkR"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>

@@ -64,6 +64,7 @@ class ViewController: UIViewController {
     
     @objc func openImage() {
         let fullScreenImageViewController = FullScreenImageViewController()
+        
         fullScreenImageViewController.initialImageView = imageView
         fullScreenImageViewController.images = ([imageView.image, UIImage(named: "Image")] as! [UIImage])
         let actionSheet = UIAlertController(title: "Action", message: nil, preferredStyle: .actionSheet)

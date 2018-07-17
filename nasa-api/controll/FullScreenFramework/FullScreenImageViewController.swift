@@ -8,18 +8,19 @@
 
 import UIKit
 
-public class FullScreenImageViewController: UIPageViewController {
+class FullScreenImageViewController: UIPageViewController {
     
-    public var previewBars: PreviewBar?
     var initialImageView: UIImageView?
     var actionSheet: UIAlertController?
-    var statusBarShouldBeHidden = false
-    var imagePreviewViewControllers = [ImagePreviewViewController]()
     var images: [UIImage]? {
         didSet {
             updateImagePreviewViewControllers(for: images!)
         }
     }
+    public weak var fsiDelegate: FSIViewControllerDelegate?
+    private var previewBars: PreviewBar!
+    private var statusBarShouldBeHidden = false
+    private var imagePreviewViewControllers = [ImagePreviewViewController]()
 
     //    MARK: Initializers
     init() {
@@ -30,11 +31,12 @@ public class FullScreenImageViewController: UIPageViewController {
         modalPresentationStyle = .overFullScreen
         modalPresentationCapturesStatusBarAppearance = true
         dataSource = self
+        delegate = self
         previewBars = PreviewBar(on: self.view)
         previewBars?.delegate = self
     }
     
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -45,9 +47,17 @@ public class FullScreenImageViewController: UIPageViewController {
         }
         self.imagePreviewViewControllers = imagePreviewViewControllers
         setViewControllers([imagePreviewViewControllers.first!], direction: .forward, animated: false)
+        previewBars.topBar.pageCounter.setAll(number: imagePreviewViewControllers.count)
+        previewBars.topBar.pageCounter.setCurrent(number: currentImageNumber())
     }
     
-    override public func viewDidAppear(_ animated: Bool) {
+    
+    func didChangePage() {
+        previewBars.topBar.pageCounter.setCurrent(number: currentImageNumber())
+        fsiDelegate?.didChangePage()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         self.initialImageView?.alpha = 0.01
         UIView.animate(withDuration: 0.3) { [unowned self] in
             self.view.backgroundColor = .black
@@ -63,6 +73,14 @@ public class FullScreenImageViewController: UIPageViewController {
         })
     }
     
+    func currentImageNumber() -> Int {
+        guard let previewViewController = viewControllers?.first as? ImagePreviewViewController,
+            let index = imagePreviewViewControllers.index(of: previewViewController) else {
+                return 0
+        }
+        return index+1
+    }
+    
     func dissmiss() {
         UIView.animate(withDuration: 0.3, delay: 0.0, options: [.allowAnimatedContent], animations: { [unowned self] in
             self.initialImageView?.alpha = 1
@@ -73,17 +91,19 @@ public class FullScreenImageViewController: UIPageViewController {
                 self.presentingViewController?.dismiss(animated: false)
         })
     }
+    
+    
 }
 
 //    MARK: Status Bar settings
 extension FullScreenImageViewController {
-    override public var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return .slide
     }
-    public override var preferredStatusBarStyle: UIStatusBarStyle {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    public override var prefersStatusBarHidden: Bool {
+    override var prefersStatusBarHidden: Bool {
         return statusBarShouldBeHidden
     }
     private func statusBar(shouldBeHidden: Bool) {
@@ -100,17 +120,19 @@ extension FullScreenImageViewController: FullScreenControllerProtocol {
     
     func didTap() {
         previewBars?.changeState()
+        fsiDelegate?.didTap()
     }
     
     func didDoubleTap() {
+        fsiDelegate?.didDoubleTap()
     }
     
     func apply(alpha: CGFloat) {
         view.backgroundColor = view.backgroundColor?.withAlphaComponent(alpha)
-        
     }
     
     func didSwipeBack() {
+        fsiDelegate?.didSwipeBack()
         dissmiss()
     }
     
@@ -130,7 +152,7 @@ extension FullScreenImageViewController: FullScreenControllerProtocol {
 
 //    MARK: UIPageViewControllerDataSource
 extension FullScreenImageViewController: UIPageViewControllerDataSource {
-    public func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
 
         guard let imagePreviewViewController = viewController as? ImagePreviewViewController else {
             return nil
@@ -142,7 +164,7 @@ extension FullScreenImageViewController: UIPageViewControllerDataSource {
         return imagePreviewViewControllers[newIndex-1]
     }
 
-    public func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let imagePreviewViewController = viewController as? ImagePreviewViewController else {
             return nil
         }
@@ -151,6 +173,15 @@ extension FullScreenImageViewController: UIPageViewControllerDataSource {
                 return nil
         }
         return imagePreviewViewControllers[newIndex+1]
+    }
+}
+
+extension FullScreenImageViewController: UIPageViewControllerDelegate {
+     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        guard completed else {
+            return
+        }
+        didChangePage()
     }
 }
 
@@ -165,17 +196,42 @@ extension FullScreenImageViewController: PreviewBarDelegate {
         }
     }
     
-    func imageCount() -> Int {
-        return images?.count ?? 0
-    }
-    
-    func currentImageNumber() -> Int {
-        return 0
-    }
-    
     func setStatusBar(isHidden: Bool) {
         statusBar(shouldBeHidden: isHidden)
     }
+}
+
+extension FullScreenImageViewController: FullScreenImagePreviewPublicInteface {
+    public var topBarView: UIView {
+        return previewBars.topBar.view
+    }
     
+    public var bottomBarView: UIView {
+        return previewBars.bottomBar.view
+    }
+    
+    public var currentCounterLabel: UILabel {
+        return previewBars.topBar.pageCounter.currentLabel
+    }
+    
+    public var ofCounterLabel: UILabel {
+        return previewBars.topBar.pageCounter.ofLabel
+    }
+    
+    public var toCounterLabel: UILabel {
+        return previewBars.topBar.pageCounter.allNumberLabel
+    }
+    
+    public var backButton: UIButton {
+        return previewBars.topBar.backButton
+    }
+    
+    public var actionButton: UIButton {
+        return previewBars.topBar.actionButton
+    }
+    
+    public func setPreviewBar(isHidden: Bool) {
+        previewBars.isHidden ? previewBars.hideBars() : previewBars.showBars()
+    }
     
 }

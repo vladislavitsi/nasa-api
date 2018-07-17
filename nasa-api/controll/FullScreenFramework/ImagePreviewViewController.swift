@@ -124,7 +124,7 @@ class ImagePreviewViewController: UIViewController {
         updateImageConstraints(with: UIScreen.main.bounds.size)
     }
     
-    func updateImageConstraints(with size: CGSize) {
+    private func updateImageConstraints(with size: CGSize) {
         if size.ratio() > image.size.ratio() {
             scrollView.removeConstraints(portraitModeConstraints)
             NSLayoutConstraint.activate(landscapeModeConstraints)

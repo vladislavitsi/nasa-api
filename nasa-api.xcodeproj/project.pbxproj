@@ -11,6 +11,7 @@
 		323419DB20F7380000F0399D /* ImagePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323419DA20F7380000F0399D /* ImagePreviewViewController.swift */; };
 		324BCE4F20F8DDAD009C8D09 /* FullScreenControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324BCE4E20F8DDAD009C8D09 /* FullScreenControllerProtocol.swift */; };
 		326F5DD420FC828100D53495 /* PreviewBarProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326F5DD320FC828100D53495 /* PreviewBarProtocol.swift */; };
+		32AEB2A020FE094300ABFB69 /* FSIViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AEB29F20FE094300ABFB69 /* FSIViewControllerDelegate.swift */; };
 		32B3835D20F38D900047B658 /* topBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32B3835C20F38D900047B658 /* topBar.xib */; };
 		32B3835F20F392FD0047B658 /* TopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B3835E20F392FD0047B658 /* TopBar.swift */; };
 		32D4548420F6472100341C57 /* botomBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D4548320F6472100341C57 /* botomBar.xib */; };
@@ -37,6 +38,7 @@
 		323419DA20F7380000F0399D /* ImagePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePreviewViewController.swift; sourceTree = "<group>"; };
 		324BCE4E20F8DDAD009C8D09 /* FullScreenControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenControllerProtocol.swift; sourceTree = "<group>"; };
 		326F5DD320FC828100D53495 /* PreviewBarProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewBarProtocol.swift; sourceTree = "<group>"; };
+		32AEB29F20FE094300ABFB69 /* FSIViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSIViewControllerDelegate.swift; sourceTree = "<group>"; };
 		32B3835C20F38D900047B658 /* topBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = topBar.xib; sourceTree = "<group>"; };
 		32B3835E20F392FD0047B658 /* TopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBar.swift; sourceTree = "<group>"; };
 		32D4548320F6472100341C57 /* botomBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = botomBar.xib; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				32F5DA0620E27E6D0029D8EF /* FullScreenImageViewController.swift */,
 				323419DA20F7380000F0399D /* ImagePreviewViewController.swift */,
 				324BCE4E20F8DDAD009C8D09 /* FullScreenControllerProtocol.swift */,
+				32AEB29F20FE094300ABFB69 /* FSIViewControllerDelegate.swift */,
 			);
 			path = FullScreenFramework;
 			sourceTree = "<group>";
@@ -323,6 +326,7 @@
 				32F5DA0420E25E950029D8EF /* ApodDAOImpl.swift in Sources */,
 				32F5D9EE20E240580029D8EF /* AppDelegate.swift in Sources */,
 				326F5DD420FC828100D53495 /* PreviewBarProtocol.swift in Sources */,
+				32AEB2A020FE094300ABFB69 /* FSIViewControllerDelegate.swift in Sources */,
 				32D4548620F649D200341C57 /* BottomBar.swift in Sources */,
 				32E42CB320EE5F220078E3D7 /* ImageViewExtension.swift in Sources */,
 				32F5DA0220E2584A0029D8EF /* ApodData.swift in Sources */,
