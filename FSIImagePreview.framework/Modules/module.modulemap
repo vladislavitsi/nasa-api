@@ -1,0 +1,11 @@
+framework module FSIImagePreview {
+  umbrella header "FSIImagePreview.h"
+
+  export *
+  module * { export * }
+}
+
+module FSIImagePreview.Swift {
+    header "FSIImagePreview-Swift.h"
+    requires objc
+}

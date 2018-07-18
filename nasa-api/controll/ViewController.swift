@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FSIImagePreview
 
 class ViewController: UIViewController {    
     @IBOutlet weak var imageView: UIImageView!
@@ -63,13 +64,13 @@ class ViewController: UIViewController {
     }
     
     @objc func openImage() {
-        let fullScreenImageViewController = FullScreenImageViewController()
-        
-        fullScreenImageViewController.initialImageView = imageView
-        fullScreenImageViewController.images = ([imageView.image, UIImage(named: "Image")] as! [UIImage])
+        let fsiViewController = FSIViewController()
+        fsiViewController.initialImageView = imageView
+        fsiViewController.bottomBarView.isHidden = true
+        fsiViewController.images = ([imageView.image, UIImage(named: "Image")] as! [UIImage])
         let actionSheet = UIAlertController(title: "Action", message: nil, preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        fullScreenImageViewController.actionSheet = actionSheet
-        present(fullScreenImageViewController, animated: false)
+        fsiViewController.actionSheet = actionSheet
+        present(fsiViewController, animated: false)
     }
 }
