@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		32B3835D20F38D900047B658 /* topBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32B3835C20F38D900047B658 /* topBar.xib */; };
-		32BF3E8920FF726F006817DF /* FSIImagePreview.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32BF3E8720FF7268006817DF /* FSIImagePreview.framework */; };
-		32BF3E8A20FF726F006817DF /* FSIImagePreview.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 32BF3E8720FF7268006817DF /* FSIImagePreview.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		32D4548420F6472100341C57 /* botomBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D4548320F6472100341C57 /* botomBar.xib */; };
 		32F5D9EE20E240580029D8EF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F5D9ED20E240580029D8EF /* AppDelegate.swift */; };
 		32F5D9F020E240580029D8EF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F5D9EF20E240580029D8EF /* ViewController.swift */; };
 		32F5D9F320E240580029D8EF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32F5D9F120E240580029D8EF /* Main.storyboard */; };
@@ -29,7 +25,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				32BF3E8A20FF726F006817DF /* FSIImagePreview.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -37,9 +32,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		32B3835C20F38D900047B658 /* topBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = topBar.xib; sourceTree = "<group>"; };
-		32BF3E8720FF7268006817DF /* FSIImagePreview.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FSIImagePreview.framework; sourceTree = "<group>"; };
-		32D4548320F6472100341C57 /* botomBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = botomBar.xib; sourceTree = "<group>"; };
 		32F5D9EA20E240580029D8EF /* nasa-api.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "nasa-api.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		32F5D9ED20E240580029D8EF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		32F5D9EF20E240580029D8EF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -60,7 +52,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32BF3E8920FF726F006817DF /* FSIImagePreview.framework in Frameworks */,
 				4453191368C9D3364A0BD5FD /* Pods_nasa_api.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -104,8 +95,6 @@
 				32F5D9F420E2405A0029D8EF /* Assets.xcassets */,
 				32F5D9F620E2405A0029D8EF /* LaunchScreen.storyboard */,
 				32F5D9F920E2405A0029D8EF /* Info.plist */,
-				32B3835C20F38D900047B658 /* topBar.xib */,
-				32D4548320F6472100341C57 /* botomBar.xib */,
 			);
 			path = support;
 			sourceTree = "<group>";
@@ -148,7 +137,6 @@
 		F96DE2EA453D51BE2AE86DCC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				32BF3E8720FF7268006817DF /* FSIImagePreview.framework */,
 				C576D9E65153545657CF4F03 /* Pods_nasa_api.framework */,
 			);
 			name = Frameworks;
@@ -215,8 +203,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32B3835D20F38D900047B658 /* topBar.xib in Resources */,
-				32D4548420F6472100341C57 /* botomBar.xib in Resources */,
 				32F5D9F820E2405A0029D8EF /* LaunchScreen.storyboard in Resources */,
 				32F5D9F520E2405A0029D8EF /* Assets.xcassets in Resources */,
 				32F5D9F320E240580029D8EF /* Main.storyboard in Resources */,
@@ -234,10 +220,12 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-nasa-api/Pods-nasa-api-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/FSIImagePreview/FSIImagePreview.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSIImagePreview.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

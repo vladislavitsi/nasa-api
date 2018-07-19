@@ -31,13 +31,11 @@ class ViewController: UIViewController {
     
     private let apodDAO: ApodDAO = ApodDAOImpl()
     
-        override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.addSubview(refreshControl)
-        
         refreshData()
         self.imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.openImage)))
-        
     }
     
     func refreshData(_ completion: (() -> Void)? = nil) {
@@ -65,12 +63,14 @@ class ViewController: UIViewController {
     
     @objc func openImage() {
         let fsiViewController = FSIViewController()
-        fsiViewController.initialImageView = imageView
+        fsiViewController.initialView = imageView
         fsiViewController.bottomBarView.isHidden = true
         fsiViewController.images = ([imageView.image, UIImage(named: "Image")] as! [UIImage])
-        let actionSheet = UIAlertController(title: "Action", message: nil, preferredStyle: .actionSheet)
+        let actionSheet = UIAlertController(title: "Options", message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Send via Email", style: .default, handler: nil))
+        actionSheet.addAction(UIAlertAction(title: "Save to Photos", style: .default, handler: nil))
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         fsiViewController.actionSheet = actionSheet
-        present(fsiViewController, animated: false)
+        fsiViewController.show(on: self)
     }
 }
