@@ -63,9 +63,10 @@ class ViewController: UIViewController {
     
     @objc func openImage() {
         let fsiViewController = FSIViewController()
+        fsiViewController.fsiDelegate = self
         fsiViewController.initialView = imageView
-        fsiViewController.bottomBarView.isHidden = true
-        fsiViewController.images = ([imageView.image, UIImage(named: "Image")] as! [UIImage])
+//        fsiViewController.bottomBarView.isHidden = true
+        fsiViewController.images = ([imageView.image, UIImage(named: "Image"), UIImage(named: "Image-1"), UIImage(named: "Image-2"), UIImage(named: "Image")] as! [UIImage])
         let actionSheet = UIAlertController(title: "Options", message: nil, preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: "Send via Email", style: .default, handler: nil))
         actionSheet.addAction(UIAlertAction(title: "Save to Photos", style: .default, handler: nil))
@@ -73,4 +74,24 @@ class ViewController: UIViewController {
         fsiViewController.actionSheet = actionSheet
         fsiViewController.show(on: self)
     }
+}
+
+extension ViewController: FSIViewControllerDelegate {
+    func didTap() {
+        print("tap")
+    }
+    
+    func didDoubleTap() {
+        print("tap tap")
+    }
+    
+    func didSwipeBack() {
+        print("swipe back")
+    }
+    
+    func didChangePage() {
+        print("change page")
+    }
+    
+    
 }
